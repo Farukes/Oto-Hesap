@@ -22,8 +22,10 @@ coverage/
 *.tsbuildinfo
 .vercel/
 
-# yapay zeka araç dizinleri (kişisel; depoya girmez)
-.claude/
+# yapay zeka araç dizinleri (kişisel; depoya girmez) — spec-kit komutları hariç
+.claude/*
+!.claude/skills/
+!.claude/commands/
 .cursor/
 .codex/
 .aider*
@@ -35,3 +37,4 @@ CLAUDE.local.md
 .idea/
 .vscode/*
 !.vscode/extensions.json
+eval-sonuc.json

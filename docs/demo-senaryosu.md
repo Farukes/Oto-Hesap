@@ -1,5 +1,7 @@
 # Demo senaryosu (TEK GERÇEK KAYNAK) — sahibi: Ömer
 
+> **Deneme sunumu 14 Eyl: 3 dakika, tek sunucu → `docs/sunum/3-dakika-akis.md` esastır.** Aşağıdaki 5 dakikalık sürüm 16 Eyl finali içindir.
+
 Toplam 5 dk. Sürücü: Ömer. Anlatıcı: Kutay. Telefon: Ömer'in (Telegram sohbeti açık, ses açık). Sunumdan 10 dk önce: `python data/seed.py --reset`, `/api/health` ısıtma, tarayıcıda 5 sekme açık.
 
 | # | Süre | Ekran | Tıklama | Söylenen cümle | Beklenen sonuç |

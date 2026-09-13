@@ -66,3 +66,7 @@ Mimari sahibi, entegrasyon lideri, API çekirdeği ve Text-to-SQL asistanı. Gü
 - **Gemini yedeği** yalnız sentetik veriyle; ücretsiz katman içeriği ürün geliştirmede kullanabiliyor (KVKK notu, DECISIONS D12).
 - **`scripts/warmup.sh`:** `/api/health` + `SELECT 1` (Neon sıfıra iner) + 1 küçük LLM çağrısı + Telegram `getMe`; Render 15 dk boşta uyur, demo öncesi 10 dk'da koşulur. Zamanlayıcı Render uyuyunca fiilen durur; "Şimdi kontrol et" butonu bu yüzden şart.
 - **Azure notu (jüri sorarsa):** Azure for Students sayfası Azure OpenAI erişimini listeliyor ama kota tablosunda öğrenci aboneliği "N/A" görünüyordu (7 Eyl kontrolü); doğru cümle: "erişim programda var, model/bölge/kota aboneliğimizde deploy öncesi doğrulanır".
+
+## Durum (13 Eyl akşam) — inşa edildi, senin için kalan
+**Yapıldı (Claude, main'de):** FastAPI iskeleti, şema + salt-okur rol komutları, summary/cashflow/CRUD/products, Text-to-SQL servisi (sqlglot AST + fonksiyon izin listesi + beyaz liste + LIMIT/timeout + önbellek + `model` alanı), LLM adaptörü (anthropic/gemini/groq/fake), 184 test, CI, `scripts/warmup.sh`, `apps/api/eval.py`, `render.yaml`, Dockerfile, Makefile.
+**Geliştirme Günü'nde senin işin:** (1) Neon: `docs/schema.sql` + RO rol + `make seed` (DATABASE_URL Neon); (2) Render: blueprint ile API, env'ler, `CORS_ORIGINS` = Vercel adresi; (3) `make eval` gerçek sağlayıcıyla, kaçıranlara few-shot ekle (`app/data/soru_bankasi.json` demo=true örnekler), sağlayıcı kararı; (4) PR incelemeleri; (5) 19:00 `git tag v0.1.0`.

@@ -1,0 +1,1 @@
+Bu depoda kurallar, mimari, API sözleşmesi ve güvenlik ilkeleri kök dizindeki `AGENTS.md` dosyasındadır; önce onu oku. Görev kartları `docs/team/<isim>.md`. Commit mesajlarına yapay zeka imzası ekleme. `.env` ve sırları asla yazma.

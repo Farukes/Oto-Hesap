@@ -49,8 +49,16 @@ CREATE TABLE IF NOT EXISTS purchase_orders (
   est_amount   NUMERIC(12,2),
   status       TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'approved', 'sent', 'rejected')),
   message_text TEXT,
-  sent_at      TIMESTAMPTZ
+  sent_at      TIMESTAMPTZ,
+  notify_ref   TEXT                     -- Telegram message_id, 'dry-run' vb.; gönderim izi
 );
+
+-- Mevcut veritabanları için (idempotent)
+ALTER TABLE purchase_orders ADD COLUMN IF NOT EXISTS notify_ref TEXT;
+
+-- Ürün başına yalnız BİR açık sipariş: DB düzeyinde mükerrerlik koruması (çift tıklama, çift zamanlayıcı)
+CREATE UNIQUE INDEX IF NOT EXISTS ux_open_order_per_product
+  ON purchase_orders (product_id) WHERE status IN ('draft', 'approved', 'sent');
 
 CREATE TABLE IF NOT EXISTS chat_log (
   id       SERIAL PRIMARY KEY,
@@ -90,3 +98,6 @@ ORDER BY m.month;
 -- GRANT SELECT ON ALL TABLES IN SCHEMA public TO otohesap_ro;
 -- ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO otohesap_ro;
 -- ALTER ROLE otohesap_ro SET statement_timeout = '5s';
+-- Gizli iletişim alanı asistana kapalı (sütun düzeyi):
+-- REVOKE SELECT ON suppliers FROM otohesap_ro;
+-- GRANT SELECT (id, name, contact_channel, lead_time_days) ON suppliers TO otohesap_ro;

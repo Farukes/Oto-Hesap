@@ -63,3 +63,7 @@ Ortak: sol menü (5 ekran), üstte "OtoHesap" + "Genel bakış" başlığı, mob
 - Sohbet balonu, katlanır SQL bloğu ve kaynak damgası küçük özel bileşenler; hazır sohbet kütüphanesi arama.
 - Recharts'a boş dizi verme: `data.length === 0` → "Veri yok" kartı. Para `tr-TR`, tarih `Europe/Istanbul`.
 - Yayında CORS için yalnız üretim alan adı; Vercel preview URL'lerine güvenme. Prod env'i gün ortasında sabitle, demo öncesi gizli pencerede test et.
+
+## Durum (13 Eyl akşam) — inşa edildi, senin için kalan
+**Yapıldı (Claude, main'de):** Next 16 uygulaması, 5 ekran, Öngörü kartları, `lib/api.ts` tipli istemci + mock modu rozeti, tr-TR biçim, lint/build temiz, canlı API'ye karşı doğrulanmış.
+**Geliştirme Günü'nde senin işin:** (1) `make web` ile aç, tasarımı kendi dokunuşunla sahiplen (renk/boşluk/ikon; yapı değişmez); (2) Vercel: Root Directory `apps/web`, env `NEXT_PUBLIC_API_URL` = Render API adresi; (3) mobil ve boş durum turu; (4) demo senaryosundaki 7 adımı canlıda kronometreyle sür, takılan yeri düzelt; (5) Kayıtlar formunda "diğer" kategori sınırı gibi küçük pürüzler. Kendi UI'ın varsa: aynı `lib/api.ts` ile bağlanır; ekran ekran değiştirilebilir.

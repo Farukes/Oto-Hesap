@@ -45,7 +45,7 @@ jobs:
       - name: ruff
         if: steps.chk.outputs.ok == 'true'
         working-directory: apps/api
-        run: uv run ruff check . && uv run ruff format --check .
+        run: uv run ruff check . ../../data && uv run ruff format --check . ../../data
       - name: pytest
         if: steps.chk.outputs.ok == 'true'
         working-directory: apps/api

@@ -29,6 +29,8 @@
 
 ## 2 · Geliştirme Günü kapsamı (tek gün, ~12 saat)
 
+**Durum 13 Eyl akşam:** MVP'nin tamamı `main`'de inşa edildi (API 184 test, web lint+build temiz, seed, ajan, asistan, Öngörü kartları, CSV). Geliştirme Günü artık **entegrasyon, anahtarlar, canlı yayın, eval, prova ve cila** günüdür; özellik listesi büyümez.
+
 **Yapılır (MVP):** Neon Postgres + sentetik 6 ay veri · Genel bakış (KPI + çubuk + pasta) · Kayıtlar (satış/gider CRUD) · Stok (kritik kırmızı) · Asistan (15 soruluk bankadan en az 5'i güvenli; SQL görünür; kaynak damgası; hazır soru çipleri) · Tedarik (kontrol et → taslak → onayla → Telegram) · CSV dışa aktar · canlı yayın (Vercel + Render + Neon) · README + CI yeşil · demo videosu yedeği.
 
 **Yapılmaz (yol haritası slaytı):** giriş/kimlik, çok kiracı, e-Fatura/e-İrsaliye, banka entegrasyonu, WhatsApp Business, mobil uygulama, Excel içe aktarma. **Bugün eklenmez:** Vanna/LangChain/LlamaIndex, LangGraph/Microsoft Agent Framework, Tremor, Azure taşıma, Trendyol entegrasyonu (yol haritasında yalnız Product V2; V1 15 Eyl 2026'da kapanıyor).
@@ -58,7 +60,7 @@ Tarayıcı ──> apps/web (Next.js + Tailwind + Recharts)
 | Web | Next.js (App Router) + Tailwind + Recharts; UI kiti serbest (shadcn/ui önerilir) | Kutay'ın başladığı yapı korunur |
 | API | FastAPI + SQLAlchemy 2 + Pydantic v2; paket yöneticisi `uv`; lint `ruff`; test `pytest` | Tüm Python kodu tip ipuçlu |
 | DB | PostgreSQL 16 (Neon ücretsiz katman) | Şema: `docs/schema.sql`; yerel test için CI'daki Postgres servisi |
-| LLM | `services/llm.py` tek adaptör: `anthropic` (varsayılan `claude-haiku-4-5`; kalite modu `claude-sonnet-5`), `gemini` (yalnız yedek, yalnız sentetik veri: ücretsiz katman içeriği ürün geliştirmede kullanabiliyor), `fake` (testler) | Model adı yalnız `.env`'de; çıktı JSON (`SQLPlan`), sıcaklık düşük |
+| LLM | `services/llm.py` tek adaptör: `anthropic` (varsayılan `claude-haiku-4-5`; kalite modu `claude-sonnet-5`), `gemini` (ücretsiz katman içeriği ürün geliştirmede kullanabiliyor → yalnız sentetik veri), `groq` (OpenAI uyumlu uç, ücretsiz katman dakika/gün sınırlı; Türkçe SQL kalitesi 15 soruluk eval'le ölçülür), `fake` (testler) | Model adı yalnız `.env`'de; çıktı JSON (`SQLPlan`), sıcaklık düşük |
 | Ajan | Kural tabanlı (LLM'siz) + APScheduler; mesaj metni şablon, LLM ile cilalama opsiyonel | Deterministik = demo güvenli |
 | Bildirim | Telegram Bot API (`notify.py`) | Tedarikçi kaydında `contact_channel='telegram'`, `contact_address=<chat_id>` |
 | Veri | `data/seed.py`: Faker + NumPy, `seed=42`, `--reset` bayrağı | Her çalıştırmada aynı rakamlar |
@@ -71,20 +73,30 @@ Tarayıcı ──> apps/web (Next.js + Tailwind + Recharts)
 
 ```
 Oto-Hesap/
-  AGENTS.md                 bu dosya (herkes)                 
-  README.md                 jüriye dönük özet (Murat; görseller Yiğit)
+  AGENTS.md                 bu dosya (herkes)
+  README.md · Makefile      jüriye dönük özet; make api / web / seed / test / lint / warmup
   .env.example              ortam değişkenleri (değişen kişi günceller)
-  .github/workflows/ci.yml  CI (Murat)
-  scripts/                  setup.sh, hooks/commit-msg (Murat)
+  render.yaml               Render blueprint (api); web Vercel'de rootDir=apps/web
+  .github/workflows/ci.yml  CI (Murat) · PULL_REQUEST_TEMPLATE.md
+  scripts/                  setup.sh, warmup.sh, github-setup.sh, hooks/commit-msg
+  .specify/ · specs/001-otohesap-mvp/   spec-kit: anayasa, spec, plan, veri modeli, sözleşme, görevler
+  .claude/skills/speckit-*  spec-kit komutları (/speckit-specify, -plan, -tasks, -implement)
   docs/
     demo-senaryosu.md       TEK GERÇEK KAYNAK (Ömer sahibi)
-    schema.sql              veri modeli (Murat sahibi; değişiklik = WhatsApp duyurusu)
-    soru-bankasi.md         15 soru + beklenen yanıt + SQL (Ömer + Yiğit)
-    DECISIONS.md            kararlar (herkes ekler)
-    team/*.md               görev kartları
-    research/*.md           derin araştırma prompt'ları ve sonuçları
-  apps/api/                 FastAPI (Murat: çekirdek, assistant; Ömer: orders, agent, notify; Yiğit: analytics)
-  apps/web/                 Next.js (Kutay)
+    schema.sql              veri modeli (Murat sahibi; değişiklik = duyuru)
+    soru-bankasi.md         15 soru (Ömer + Yiğit); makine kopyası apps/api/app/data/soru_bankasi.json
+    DECISIONS.md            kararlar · team/*.md görev kartları · research/*.md · sunum/pitch-paketi.md
+  apps/api/                 FastAPI (Python 3.12, uv)
+    app/config.py db.py models.py main.py          çekirdek (Murat)
+    app/routers/  summary sales expenses products assistant   (Murat)
+                  analytics export insights                     (Yiğit)
+                  orders agent                                  (Ömer)
+    app/services/ llm.py text2sql.py (Murat) · agent.py notify.py scheduler.py (Ömer) · insights.py (Yiğit)
+    app/schemas/  pydantic şemaları (alan sahibi)
+    app/data/soru_bankasi.json
+    tests/        conftest.py (Murat) + alan testleri
+    Dockerfile
+  apps/web/                 Next 16 + Tailwind 4 + Recharts (Kutay): app/{page,kayitlar,stok,asistan,tedarik}, components/, lib/api.ts, lib/mocks/
   data/seed.py              sentetik veri (Yiğit)
 ```
 
@@ -104,6 +116,17 @@ Oto-Hesap/
 | `chat_log` | id, asked_at, question, sql_text, answer, ok |
 | `v_monthly_cashflow` (view) | month, income, expense, net |
 
+**Metrik sözlüğü (D16; grafik, SQL, slayt aynı tanımı kullanır):**
+
+| Terim | Tanım | Ekranda |
+|-------|-------|---------|
+| Gelir | Σ `sales.total` (satış anı fiyatı × adet) | "Gelir" |
+| Gider | Σ `expenses.amount` | "Gider" |
+| Fark | Gelir − Gider; **net kâr değildir** (KDV, iade, tahakkuk yok) | "Fark (Gelir − Gider)" |
+| Tahmini brüt katkı | Σ qty × (unit_price − products.unit_cost); mevcut birim maliyetle | "En kârlı ürün (tahmini)" |
+| Aylık görünüm | `v_monthly_cashflow`: ay, gelir, gider, fark | "Aylık gelir–gider" (nakit akışı denmez) |
+| Sipariş `sent` | Mesaj gönderildi; teslim/kabul/ödeme değil; stok artmaz | "Gönderildi" + "teslim alındı değil" notu |
+
 Seed hedefi: teknoloji aksesuar mağazası senaryosu; 20 ürün / 5 kategori / 5 tedarikçi; Nisan–Eylül 2026; ~600 satış, ~250 gider; **tam 2 ürün kritik stokta**; kâr sorusunun tek net kazananı var (powerbank). Kritik: `stock_qty <= reorder_point`.
 
 ---
@@ -122,11 +145,12 @@ PUT    /api/sales/{id}  · DELETE /api/sales/{id}
 GET/POST/PUT/DELETE /api/expenses (aynı kalıp; alanlar: spent_at, category, amount, vendor, note)
 GET    /api/products                              -> [{..., is_critical, open_order_id}]
 PATCH  /api/products/{id} {reorder_point?, target_stock?, stock_qty?}
-POST   /api/assistant/ask {question}              -> {answer, sql, rows, columns, sources:[tablo...], asked_at, cached:bool}
+POST   /api/assistant/ask {question}              -> {ok, answer, sql, rows, columns, sources:[tablo...], asked_at, cached, model}
 GET    /api/assistant/suggestions                 -> ["Bu ay toplam giderim ne kadar?", ...]
-POST   /api/agent/check                           -> {created:int, drafts:[...]}
+POST   /api/agent/check                           -> {created:int, drafts:[...], skipped:[{product_id, reason}]}
+GET    /api/insights                              -> [{id, title, body, severity: info|warn|critical, metric, change_pct}]
 GET    /api/orders?status=draft|approved|sent|rejected -> [...]
-POST   /api/orders/{id}/approve                   -> gönderir, {status:"sent", sent_at}
+POST   /api/orders/{id}/approve                   -> sipariş + notify:{ok, dry_run, channel, message_id}; 409 draft değilse; 502 gönderilemedi (approved kalır)
 POST   /api/orders/{id}/reject                    -> {status:"rejected"}
 GET    /api/export/sales.csv · /api/export/expenses.csv
 ```
@@ -146,7 +170,9 @@ Kurallar: tarihler ISO 8601 UTC; para `NUMERIC(12,2)` → JSON'da string değil 
 7. Soru bankasındaki sorular için `soru → SQL` önbelleği (`docs/soru-bankasi.md`'den yüklenir): LLM düşerse demo yaşar.
 8. Her soru `chat_log`'a yazılır.
 9. **Nesne beyaz listesi:** sqlglot AST'den çıkan tablo/görünüm adları yalnız `sales, expenses, products, suppliers, purchase_orders, v_monthly_cashflow` olabilir; başka ad → red. "Parser geçti = güvenli" sanılmaz; katmanlar üst üste (defense-in-depth).
-10. **Eval (15 soru, `docs/soru-bankasi.md`):** 5 basit toplam · 3 tarih filtresi · 3 join · 2 boş/uç durum · 2 saldırgan istek ("tüm satışları sil"). Başarı = beklenen rakam + izinli tablolar + yazma yok; SQL metni birebir eşleşmesi aranmaz.
+10. **Fonksiyon izin listesi ve yapı reddi (D19):** yalnız sum, count, avg, min, max, coalesce, round, date_trunc, date_part, extract, now, current_date, to_char, lower, upper, cast, nullif, greatest, least, abs; `pg_sleep`, `set_config`, `pg_*`, `SELECT INTO`, CTE içinde DML, çoklu ifade red. `suppliers.contact_address` salt-okur role sütun düzeyinde kapalı; prompt şemasında yok.
+11. Tarih filtreleri **yarı açık aralık** `[başlangıç, bitiş)`; "bu ay" = içinde bulunulan takvim ayı (UTC); 3 ay / 6 ay = içinde bulunulan ay dahil son 3 / 6 takvim ayı — özet, analitik ve aylık akış aynı pencereyi kullanır; belirsiz metrikte D16 varsayılanı + yanıtta varsayım cümlesi (D20).
+12. **Eval (15 soru, `docs/soru-bankasi.md`):** 5 basit toplam · 3 tarih filtresi · 3 join · 2 boş/uç durum · 2 saldırgan istek ("tüm satışları sil"). Başarı = beklenen rakam + izinli tablolar + yazma yok; SQL metni birebir eşleşmesi aranmaz.
 
 ---
 
@@ -164,6 +190,9 @@ Kurallar: tarihler ISO 8601 UTC; para `NUMERIC(12,2)` → JSON'da string değil 
 ---
 
 ## 9 · AI-SDLC: yapay zekayla nasıl çalışıyoruz (hafif, 1 günlük sürüm)
+
+**Spec-kit (kurulu):** `.specify/memory/constitution.md` ilkeler, `specs/001-otohesap-mvp/` altında `spec.md` (kullanıcı hikâyeleri + kabul senaryoları), `plan.md`, `data-model.md`, `contracts/api.md`, `quickstart.md`, `tasks.md` (görev listesi, sahip ve [P] paralellik etiketiyle). Claude Code kullananlar `/speckit-tasks`, `/speckit-implement` komutlarını görür; diğer araçlar aynı dosyaları bağlam olarak alır. Yeni bir özellik = `specs/00N-<ad>/` altında önce spec, sonra kod. `.specify/scripts/*` git dalı açar; dal modelimizle çakışmaması için o script'ler çalıştırılmaz, klasör elle açılır.
+
 
 1. **Bağlam ver:** oturumun ilk mesajı = `AGENTS.md` + görev kartın + dokunacağın dosyalar. Bağlamsız "şunu yap" yok.
 2. **Önce plan, sonra kod:** yapay zekadan 5 maddelik plan iste, onayla, sonra küçük adımlarla uygulat. Her adım çalışır durumda biter.
@@ -188,31 +217,29 @@ Kurallar: tarihler ISO 8601 UTC; para `NUMERIC(12,2)` → JSON'da string değil 
 
 ---
 
-## 11 · Geliştirme Günü çizelgesi (09:00–22:00; tarih toplantıda: muhtemelen 14 Eyl Pzt)
+## 11 · Geliştirme Günü çizelgesi v2 (09:00–22:00; tarih toplantıda)
+
+Ürün `main`'de çalışır durumda. Gün, "kodu yazma" değil **"canlıya al, doğrula, prova et"** günüdür.
 
 | Saat | Kilometre taşı | Kim |
 |------|----------------|-----|
-| 09:00–09:30 | Kickoff: herkes AGENTS.md okudu, Neon bağlantısı var, dalını açtı, "başladım" yazdı | Herkes |
-| 09:30–10:30 | İskelet PR main'de: api boot, models, /api/health, boş router'lar, CI yeşil. Diğerleri bağımsız işte (mock UI, seed lokal, Telegram bot) | Murat / herkes |
-| **10:30** | **Checkpoint 1:** iskelet main'de, herkes rebase | Herkes |
-| 10:30–13:00 | Çekirdek: summary/cashflow/CRUD gerçek (Murat) · seed Neon'a yüklendi 11:00 + analytics (Yiğit) · Genel bakış + Kayıtlar API'ye bağlı (Kutay) · agent.py + orders uçları (Ömer) | Herkes |
-| **13:00** | **Checkpoint 2 (30 dk öğle):** pano gerçek veriyle; demo turu 1 | Herkes |
-| 13:30–16:30 | Zeka: text2sql (Murat) · approve → Telegram + zamanlayıcı (Ömer) · Asistan + Tedarik ekranları (Kutay) · soru bankası doğrulama, CSV, testler, slayt taslağı (Yiğit) | Herkes |
-| **16:30** | **Checkpoint 3:** asistan 5 soru + ajan onay → mesaj çalışıyor; demo turu 2 | Herkes |
-| 16:30–19:00 | Cila: çipler, Sorguyu gör, kaynak damgası, rozetler, hata durumları, README, `--reset` | Herkes |
-| **19:00** | **ÖZELLİK DONDURMA.** Yalnız hata düzeltme | Herkes |
-| 19:00–20:00 | Yayın: Vercel + Render + Neon; `scripts/warmup.sh` (health + `SELECT 1` + küçük LLM çağrısı; Render 15 dk boşta uyur, Neon sıfıra iner); canlı linkte demo senaryosu; CORS'ta yalnız üretim alan adı | Murat + Kutay |
-| 20:00–21:00 | Prova 1 (kronometre), ekran kaydı videosu | Ömer sürer, herkes |
-| 21:00–22:00 | Düzeltmeler, prova 2, slaytlar final, `v0.1.0` etiketi | Herkes |
-| 22:00 | Durulur. Uyku da hazırlığın parçası | Herkes |
+| 09:00–09:30 | Kickoff: `git pull`, `make setup`, `.env` (Neon URL'leri Murat'tan, anahtarlar), `make seed && make api && make web`; herkes demo senaryosunu yerelde bir kez sürer | Herkes |
+| 09:30–11:00 | **Murat:** Neon'da şema + `otohesap_ro` + seed; Render'a API (`render.yaml`), env'ler, CORS; `/api/health` canlı. **Kutay:** Vercel'e web (`NEXT_PUBLIC_API_URL` = Render), kendi dokunuşları, mobil kontrol. **Ömer:** Telegram botu + chat_id'yi tedarikçiye yaz (`data/README.md`), `NOTIFY_DRY_RUN=false` ile gerçek mesaj testi. **Yiğit:** seed özetindeki rakamları `docs/soru-bankasi.md`'ye işle, ekran görüntüleri, slayt iskeleti | Herkes |
+| **11:00** | **Checkpoint 1:** canlı link açılıyor, telefonda gerçek Telegram mesajı düştü | Herkes |
+| 11:00–13:00 | **Murat + Ömer:** `make eval` gerçek sağlayıcıyla (Gemini/Groq/Anthropic) → 15 sorudan kaçı doğru; kaçıranlar için few-shot/prompt düzeltmesi; sağlayıcı kararı (D15). **Kutay:** hata/boş durum cilası, canlıda CSV, "Sorguyu gör". **Yiğit:** slaytlar (pitch-paketi), README görselleri | Herkes |
+| **13:00** | **Checkpoint 2 (öğle):** canlıda demo turu 1, kronometreyle | Herkes |
+| 13:30–16:30 | Bulunan hataların düzeltilmesi; jüri soruları provası (pitch-paketi'ndeki 10 soru); Öngörü kartı metinleri; "Fark ≠ net kâr", "sent ≠ teslim" cümleleri sunum metninde; `scripts/warmup.sh` canlı adrese | Herkes |
+| **16:30** | **Checkpoint 3:** demo turu 2 canlıda + telefon; video kaydı (3 dk) | Ömer sürer |
+| 16:30–19:00 | Slaytlar final (PowerPoint), sunum metni, kapanış cümleleri; README son hal | Yiğit + Ömer |
+| **19:00** | **DONDURMA.** Yalnız bloklayıcı hata; `v0.1.0` etiketi | Murat |
+| 19:00–21:00 | Prova 3 (okul Wi-Fi senaryosu: hotspot), yedek video kontrol, seed reset provası | Herkes |
+| 21:00 | Durulur | Herkes |
 
-**İletişim:** saat başı WhatsApp'a 1 satır (ne bitti / ne var / blokaj). Checkpoint'lerde 10 dk görüntülü.
-
----
+**İletişim:** saat başı WhatsApp'a 1 satır; checkpoint'lerde 10 dk görüntülü. Blokaj 45 dk'yı geçince yaz.
 
 ## 12 · Sunum notu (kısa)
 
-10 dk, PowerPoint, 9 slayt; ayrıntı `docs/demo-senaryosu.md` ve Notion planı. Jüride kurumsal ve Microsoft çözüm ortağı katılımcılar olabilir: **README, CI rozeti, canlı link, temiz commit geçmişi** görünür kalite göstergesidir. Demo yalnız soru bankasındaki sorularla yapılır.
+10 dk, PowerPoint, 9 slayt; ayrıntı `docs/demo-senaryosu.md` ve Notion planı. Jüride kurumsal ve Microsoft çözüm ortağı katılımcılar olabilir: **README, CI rozeti, canlı link, temiz commit geçmişi** görünür kalite göstergesidir. Demo yalnız soru bankasındaki sorularla yapılır. Sunumda "Fark" net kâr diye anlatılmaz, "en kârlı ürün" tahmini brüt katkıdır, veri "sentetik demo" diye etiketlenir, Render Free'de zamanlayıcının uyuduğu saklanmaz ("Şimdi kontrol et" aynı fonksiyondur).
 
 ---
 

@@ -62,3 +62,7 @@ Otonom tedarik ajanı (tespit → taslak → insan onayı → Telegram), sipari�
 - **Demo süresi:** pano 30 sn → kayıt 30 → soru 60 → SQL 30 → kritik stok 30 → taslak 40 → onay 20 → telefon 20 → kapanış 20. En yüksek "vay" anı son 60 saniye; zaman kalmıyorsa grafik değil bu akış korunur.
 - **Okul Wi-Fi'ı:** telefon hotspot'u hazır; Telegram sohbeti açık; token `.env`'de; 30–60 sn kayıtlı yedek video.
 - Pitch metinleri hazır: `docs/sunum/pitch-paketi.md` (asansör konuşması, 10 jüri sorusu, köprü cümleleri). Rakamlar için `docs/research/KONTROL-2026-09-13.md`'ye bak: A olmayan sayı söylenmez.
+
+## Durum (13 Eyl akşam) — inşa edildi, senin için kalan
+**Yapıldı (Claude, main'de):** kural tabanlı ajan (`run_check`), DB tekil indeksle tekrar koruması, durum makinesi (draft→approved→sent | rejected, 409/502 yolları), Telegram `notify.py` (dry-run), zamanlayıcı, `notify_ref`, DEMO etiketli mesaj, soru bankası 15 soru (JSON + md), 47 test.
+**Geliştirme Günü'nde senin işin:** (1) BotFather'dan bot + chat_id; `UPDATE suppliers ... WHERE contact_channel='telegram'` (komut `data/README.md`'de); Render'da `TELEGRAM_BOT_TOKEN`, `NOTIFY_DRY_RUN=false`; telefonda gerçek mesaj; (2) `docs/soru-bankasi.md`'de "seed sonrası doldurulacak" rakamları `data/README.md` özetinden doldur (Yiğit ile); (3) `docs/demo-senaryosu.md`'yi canlı adres ve gerçek rakamlarla son haline getir; (4) sunum metni + 10 jüri sorusu (`docs/sunum/pitch-paketi.md`); (5) 3 prova, video kaydı, hotspot.

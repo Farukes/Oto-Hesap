@@ -15,11 +15,14 @@ KOBİ'ler için web uygulaması: gelir-gider + stok panosu · Türkçe soruyla v
 
 Depo: https://github.com/muratcan-ates/Oto-Hesap · Plan (Notion): https://app.notion.com/p/3dac9fef3abb8132a124cce984e2827d
 
+> **Güncelleme 13 Eyl akşam:** ürün `main`'de çalışır durumda (API + web + seed + ajan + asistan, 184 test). Geliştirme Günü = canlıya alma, anahtarlar, eval, prova. Kartındaki "Durum" bölümüne bak.
+
 ## Bu akşam herkes (30 dk)
 ```bash
 git clone https://github.com/muratcan-ates/Oto-Hesap.git ~/code/Oto-Hesap && cd ~/code/Oto-Hesap
 ./scripts/setup.sh            # iCloud dışı kontrolü + AI-imza engeli + .env
 git checkout <dalın>          # murat/api-core · kutay/web · omer/agent · yigit/data
+make seed && make api         # ayrı terminalde: make web  → http://localhost:3000
 ```
 1. `AGENTS.md`'yi oku (10 dk). Kendi kartını oku: `docs/team/<isim>.md`.
 2. `.env` dosyanı doldur (Neon bağlantısı Murat'tan davetle gelir; sırlar WhatsApp'a yazılmaz).

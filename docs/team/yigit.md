@@ -61,3 +61,7 @@ Sentetik veri ve analitik uçlar; rakamların doğruluğu (testler); CSV dışa 
 - **"Rakiplerde AI yok" slaytı YOK.** Konumlama: "ön muhasebenin yerine geçen değil, üstünde çalışan karar katmanı".
 - Slayt madde listesi, 5 slogan ve konuşmacı notları: `docs/sunum/pitch-paketi.md`.
 - Seed: kritik stoktaki 2 ürünü rastgeleliğe bırakma; üretimden sonra deterministik düzelt ve fixture'ı `data/fixture.json` olarak kaydet (CI aynı dosyayı yükler).
+
+## Durum (13 Eyl akşam) — inşa edildi, senin için kalan
+**Yapıldı (Claude, main'de):** `data/seed.py` (608 satış, 228 gider, tam 2 kritik, kâr lideri, `as_of`), analitik uçlar, CSV (enjeksiyon korumalı), 5 Öngörü kartı, 24 test; seed özeti `data/README.md`.
+**Geliştirme Günü'nde senin işin:** (1) slaytlar: `docs/sunum/pitch-paketi.md` 9 slayt, poster renk dili, TÜİK rakamları kaynaklı, "Rakiplerde AI yok" yok; (2) canlı uygulamadan ekran görüntüleri (pano, asistan, tedarik) → slayt + README; (3) soru bankası beklenen rakamları (Ömer ile); (4) demo verisinde göze batan bir şey varsa (ürün adı, tutar) seed'de düzelt, `make seed`; (5) video yedeği montajı.
