@@ -1,67 +1,60 @@
-# Görev kartı — Yiğit (dal: `yigit/data`)
+# Yiğit — görev kartı (13 Eyl akşam sürümü; deneme sunumu 14 Eyl, 3 dk)
 
-## Nasıl başlarım (5 dakika)
+**Durum:** Uygulama `main`'de çalışıyor. Sentetik veri (`data/seed.py`: 608 satış, 228 gider, 20 ürün, tam 2 kritik, kâr lideri Powerbank 20000 mAh), analitik uçlar, Öngörü kartları ve CSV yazıldı ve testli (24 test). Bugün hedefin: **ekran görüntüleri, 16 Eyl için slayt iskeleti, veriyi göz kontrolünden geçirmek.**
+
+## 1 · Yapay zekaya ilk mesaj (olduğu gibi yapıştır; ardından `AGENTS.md` ve bu dosyayı ekle)
+> Sen benim geliştirme asistanımsın. Ekli `AGENTS.md` ve görev kartım projenin tek gerçeğidir; dışına çıkma, yeni özellik önerme. Depo: https://github.com/muratcan-ates/Oto-Hesap — dalım `yigit/data`. Ürün çalışır durumda; benim işim karttaki adımları **sırayla** bitirmek. Her adımda: ne yapacağını 3 maddede söyle, ben "devam" deyince yap, çalıştırdığın komutun çıktısını göster, bitince "ADIM N TAMAM" yaz ve sonraki adıma geç. Bilmediğin dosya/alan/komut uydurma; önce dosyayı oku, yine emin değilsen bana sor. Commit mesajına yapay zeka imzası ekleme. `.env` içeriğini ve anahtarları asla sohbete yazma. Şu an Adım 0'dayım.
+
+## 2 · Adımlar (sırayla)
+### Adım 0 · Kurulum (15 dk) — herkes aynı
 ```bash
 git clone https://github.com/muratcan-ates/Oto-Hesap.git ~/code/Oto-Hesap && cd ~/code/Oto-Hesap
-./scripts/setup.sh
+./scripts/setup.sh                # hook + .env + bağımlılıklar (uv, bun gerekir; yoksa: brew install uv oven-sh/bun/bun)
 git checkout yigit/data
 ```
-Sonra kendi yapay zeka aracına şu ilk mesajı at ve iki dosyayı yapıştır (`AGENTS.md` + bu kart):
+`.env` doldur: `DATABASE_URL` ve `DATABASE_URL_RO` → Murat'ın DM'le attığı Neon adresleri (kendi Postgres'in varsa: `createdb otohesap && psql -d otohesap -f docs/schema.sql`, salt-okur rol komutları `docs/schema.sql` sonunda). `LLM_PROVIDER=fake` bırakabilirsin; demo soruları anahtarsız da çalışır.
+```bash
+make seed        # sentetik veri (6 ay, 20 ürün, 2 kritik)  — Neon paylaşımlıysa yalnız Murat koşar
+make api         # http://localhost:8000/docs
+make web         # ayrı terminal → http://localhost:3000
+```
+**Kabul:** `http://localhost:3000` açılıyor, sol menü altında "API bağlı" yazıyor (mock rozeti YOK), Genel Bakış'ta "Kritik ürün: 2".
 
-> Aşağıda projenin AGENTS.md dosyası ve benim görev kartım var. Kurallara uy. Bilmediğin alan, model adı veya URL uydurma; `TODO(yigit)` bırak ve sor. Önce 5 maddelik plan ver; onaylayınca küçük adımlarla uygula, her adımda testi koştur. İlk işim: `data/seed.py` — Faker, seed=42, tam 2 kritik ürün.
+### Adım 1 · Ekran görüntüleri (20 dk)
+`http://localhost:3000` açıkken 4 görüntü al (tam pencere, 1440 genişlik, açık tema): Genel Bakış (Öngörü kartları görünsün), Asistan (çip sorusu + "Sorguyu gör" açık), Tedarik (onay sonrası "Gönderildi"), Stok (2 kırmızı satır). Kaydet: `docs/img/genel-bakis.png`, `asistan.png`, `tedarik.png`, `stok.png`. README'de "Ekranlar" bölümü ekle (4 resim, 1'er satır açıklama).
+**Kabul:** 4 dosya `docs/img/` altında, README'de görünüyor.
 
-Bitince: `git add -p` → `git commit` (imza yok) → `git push -u origin yigit/data` → PR aç (şablon dolu) → gruba "PR açık" yaz.
+### Adım 2 · 16 Eyl slayt iskeleti (60 dk)
+PowerPoint (`docs/sunum/OtoHesap.pptx`), 6 slayt: (1) Kapak "Verinizi anlayın. İşinizi yönetin." (2) Problem: TÜİK 2024 — 3,928 milyon KOBİ, %68,5 istihdam, %44,1 ciro, %35,1'i ticaret (kaynak satırı: TÜİK KOBİ İstatistikleri 2024) (3) Çözüm: 4 yetenek + Adım 1 görüntüleri (4) Nasıl çalışır: "LLM sorguyu yazar → rakamı veritabanı verir → siparişi kural motoru hazırlar → insan onaylar" (5) Ekip: 4 isim + iş bölümü (6) Yol haritası: Trendyol Product V2, e-belge entegratörü, çok kiracılı sürüm, Azure. Renk dili poster: lacivert `#0F2A3C`, yeşil `#1C8C6E`. **"Rakiplerde AI yok" cümlesi yok.** Metinler: `docs/sunum/pitch-paketi.md`.
+**Kabul:** dosya depoda, 6 slayt, her slaytta en fazla 3 madde.
 
-> Yapay zekaya ilk mesaj: "Aşağıda AGENTS.md ve görev kartım var. Kurallara uy. Şema `docs/schema.sql`'dekidir; sütun ekleme/değiştirme önerme (ihtiyaç → Murat). Seed deterministik olacak (seed=42). Uydurma yok; `TODO(yigit)` bırak ve sor. Önce 5 maddelik plan, sonra küçük adımlar, her adımda test. Şu an şu adımdayım: ___"
+### Adım 3 · Veri göz kontrolü (20 dk)
+`http://localhost:3000/kayitlar` ve `/stok`'ta ürün adları, tutarlar, kategoriler jüri gözüyle mantıklı mı? Sorun varsa `data/seed.py` içinde ürün listesi/fiyat aralığını düzelt, sonra:
+```bash
+make seed && cd apps/api && TEST_DB_NAME=otohesap_test_yigit uv run pytest -q tests/test_seed.py
+```
+**Kabul:** test yeşil; hâlâ tam 2 kritik ürün ve Powerbank kâr lideri (test bunu doğrular).
 
-## Rol
-Sentetik veri ve analitik uçlar; rakamların doğruluğu (testler); CSV dışa aktarma; sunum tasarımı (PowerPoint) ve README görselleri; sunumda "Teknoloji ve yöntem + Ekip" slaytları.
+### Adım 4 · PR aç (10 dk)
+```bash
+git add -A && git commit -m "docs: ekran görüntüleri, slayt iskeleti" && git push -u origin yigit/data
+```
+PR: `yigit/data` → `main`. **Kabul:** CI yeşil.
 
-## Bugün teslim edeceklerim
-1. **09:30–11:00 `data/seed.py` (iskeleti beklemeden; şema `docs/schema.sql`)**
-   - Faker (`tr_TR`) + NumPy, `np.random.default_rng(42)`; `--reset` bayrağı tabloları boşaltıp yeniden doldurur; `DATABASE_URL`'e psycopg ile doğrudan yazar (SQLAlchemy'e bağımlı değil ki 11:00'de hazır olsun).
-   - Senaryo: teknoloji aksesuar mağazası. 5 tedarikçi (biri Ömer'in Telegram chat_id'si, kanal `telegram`); 20 ürün / 5 kategori (kulaklık, kılıf, kablo-şarj, powerbank, aksesuar); maliyet–fiyat marjı %25–60.
-   - `sales`: Nisan–Eylül 2026, ~600 satır; hafta içi/sonu ve Ağustos–Eylül artışı; kanal %60 mağaza / %40 online. **Kâr sıralamasında tek net kazanan: powerbank** (test bunu doğrular).
-   - `expenses`: ~250 satır; kira ve maaş her ayın 1'inde sabit; elektrik, kargo, reklam, tedarik değişken.
-   - **Tam 2 ürün kritik** (`stock_qty <= reorder_point`); üçüncü bir ürün eşiğin 1 üstünde (demoda satış ekleyince kritiğe düşer).
-   - Sonunda özet basar: toplam gelir, gider, net, kritik ürünler, en kârlı ürün → bu rakamlar `docs/soru-bankasi.md`'ye ve testlere girer.
-   - **11:00: Neon'a yüklendi, WhatsApp'a özet rakamlar.**
-2. **11:00–13:00 Analitik uçlar (`routers/analytics.py`)**: `expenses-by-category` (pay yüzdesiyle), `sales-by-product` (`revenue`, `profit = sum(qty*(unit_price-unit_cost))`, `top`), `period` filtresi (`month|quarter|half`). Testler seed rakamlarıyla.
-3. **13:30–15:00 CSV dışa aktarma** (`/api/export/sales.csv`, `expenses.csv`; UTF-8 BOM, `;` ayraç → Excel TR açar) + `tests/test_seed.py` (satır sayıları, 2 kritik, powerbank en kârlı).
-4. **13:00–16:30 Soru bankası doğrulama (Ömer ile):** 15 sorunun beklenen SQL'ini seed üstünde koş, rakamları yaz.
-5. **15:00–19:00 Sunum tasarımı:** PowerPoint 9 slayt (poster renk dili: lacivert + yeşil; sade); mimari diyagramı (AGENTS.md §3'ten), akış şeritleri, ekran görüntüleri (Kutay 17:00'de verir), stack tablosu, ekip slaydı, yol haritası. README için 3 görsel (pano, asistan, tedarik).
-6. **19:00–22:00** Slaytlar final, prova geri bildirimleriyle düzeltme, video yedeği montajı (Ömer kaydeder).
+### Adım 5 · Ekstra (zaman kalırsa)
+- Öngörü kartı metinleri (`apps/api/app/services/insights.py`) daha doğal Türkçe.
+- 90 sn demo videosu için Murat'a kurgu yardımı (Canva).
 
-## Bağımlılıklar
-- **Bana gelen:** `docs/schema.sql` (09:00'da hazır), Neon bağlantısı (09:00), iskelet (10:30, analytics için), ekran görüntüleri (17:00).
-- **Benden giden:** seed + özet rakamlar (11:00) → herkes; analytics (13:00) → Kutay; beklenen rakamlar (16:30) → Murat/Ömer; slaytlar (21:00).
+## 3 · Bilmen gerekenler
+- Seed deterministik (seed=42); rastgelelik ekleme, kritik ürünler adla sabit (`CRITICAL_PRODUCTS`).
+- "Fark" net kâr değildir; "en kârlı ürün" tahmini brüt katkıdır — slaytlarda bu kelimeler (D16).
+- Rakam kaynakları ve hangi sayının slayta girebileceği: `docs/research/KONTROL-2026-09-13.md`.
 
-## Dosyalarım
-`data/seed.py`, `apps/api/app/routers/analytics.py`, `routers/export.py` (Murat iskelette açar), `tests/{test_seed,test_analytics}.py`, `docs/sunum/OtoHesap.pptx`, `docs/img/*`, `docs/soru-bankasi.md` (Ömer ile).
+## 4 · Kurallar (kısa)
+- Kendi dalında çalış; `main`'e yalnız PR ile (`git push -u origin yigit/data` → GitHub'da "Compare & pull request"). Push yetkin yoksa Murat'a yaz.
+- Küçük commit, imzasız (`git log -1` ile kontrol; hook zaten engeller).
+- `.env` ve anahtarlar sohbete/gruba yazılmaz.
+- Yeni özellik yok; kırık bir şey görürsen gruba yaz.
 
-## Kabul kriterleri
-- 11:00: `python data/seed.py --reset` 10 sn altında; özet rakamlar basılır; iki kez koşunca aynı rakamlar.
-- 13:00: pasta ve "en kârlı ürün" uçları gerçek; testler geçer.
-- 16:30: 15 sorunun beklenen rakamları yazılı.
-- 21:00: slaytlar 9, PowerPoint formatında, 10 dk akışa uygun.
-
-## Risk ve yedek
-- Neon'a yazma yavaşsa `COPY`/`executemany` toplu ekle.
-- Faker Türkçe ad üretimi zayıfsa ürün adları elle liste (20 satır).
-- PowerPoint yoksa Keynote → `.pptx` dışa aktar (format zorunlu).
-
-## Yapma
-- Şema değiştirme; ekran kodu yazma; ajan/asistan koduna dokunma.
-- Seed'e rastgelelik (zaman damgası, `random` tohumsuz) sokma.
-
-## Araştırmadan gelen notlar (13 Eyl, SONUC-chatgpt)
-- **Problem slaydı rakamları (TÜİK 2024, A):** 3,928 milyon KOBİ · %99,6 girişim · %68,5 istihdam · %44,1 ciro · %35,1'i ticaret. Kaynak satırı slaytın altına: "TÜİK, KOBİ İstatistikleri 2024".
-- **Slayta GİRMEYECEK sayılar:** ön muhasebe yazılımı kullanım oranı, haftalık zaman kaybı, KOBİ AI benimseme oranı, Trendyol "40 milyon müşteri" (aramada 35–37 milyon çıkıyor), bizim fiyat paketlerimiz "pazar fiyatı" gibi. Kullanılabilir: Paraşüt çıpası "940 TL + KDV/ay" (parasut.com, A; sayfa tarihi belirsiz, "güncel sayfa" diye sun), Trendyol "250.000'den fazla satıcı (2024)", ÖHVPS 2.0 "16,4 milyon kullanıcı, günlük 12,3 milyon işlem, 53 katılımcı (TCMB, 17 Mart 2026)", e-Fatura 1 Temmuz 2026 eşikleri (3 milyon TL genel, 500 bin TL e-ticaret; sektör kaynakları, B).
-- **Yol haritası slaydı:** Trendyol Product V2 (V1 15 Eyl 2026'da kapanıyor) → e-belge entegratörü → lisanslı açık bankacılık sağlayıcısı → çok kiracı (tenant_id + RLS) → Azure (Container Apps + PostgreSQL + Entra) + Marketplace.
-- **"Rakiplerde AI yok" slaytı YOK.** Konumlama: "ön muhasebenin yerine geçen değil, üstünde çalışan karar katmanı".
-- Slayt madde listesi, 5 slogan ve konuşmacı notları: `docs/sunum/pitch-paketi.md`.
-- Seed: kritik stoktaki 2 ürünü rastgeleliğe bırakma; üretimden sonra deterministik düzelt ve fixture'ı `data/fixture.json` olarak kaydet (CI aynı dosyayı yükler).
-
-## Durum (13 Eyl akşam) — inşa edildi, senin için kalan
-**Yapıldı (Claude, main'de):** `data/seed.py` (608 satış, 228 gider, tam 2 kritik, kâr lideri, `as_of`), analitik uçlar, CSV (enjeksiyon korumalı), 5 Öngörü kartı, 24 test; seed özeti `data/README.md`.
-**Geliştirme Günü'nde senin işin:** (1) slaytlar: `docs/sunum/pitch-paketi.md` 9 slayt, poster renk dili, TÜİK rakamları kaynaklı, "Rakiplerde AI yok" yok; (2) canlı uygulamadan ekran görüntüleri (pano, asistan, tedarik) → slayt + README; (3) soru bankası beklenen rakamları (Ömer ile); (4) demo verisinde göze batan bir şey varsa (ürün adı, tutar) seed'de düzelt, `make seed`; (5) video yedeği montajı.
+## 5 · Takılırsan
+45 dakikada ilerleme yoksa gruba yaz: "Adım N'de takıldım, hata: …". Yapay zekaya `docs/team/BUGUN-PLAN.md` ve hata metnini ver. 22:00 kontrol toplantısında canlı bakarız.
