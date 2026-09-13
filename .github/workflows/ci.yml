@@ -74,7 +74,7 @@ jobs:
         run: |
           if [ -f bun.lock ] || [ -f bun.lockb ]; then
             bun install --frozen-lockfile
-            bun run lint --if-present
+            bun run lint
             bun run build
           else
             npm ci
