@@ -1,0 +1,37 @@
+[project]
+name = "otohesap-api"
+version = "0.1.0"
+description = "OtoHesap — KOBİ finans + stok API (FastAPI)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "sqlalchemy>=2.0.30",
+  "psycopg[binary]>=3.2",
+  "pydantic>=2.8",
+  "pydantic-settings>=2.4",
+  "apscheduler>=3.10,<4",
+  "httpx>=0.27",
+  "anthropic>=1.0",
+  "google-genai>=1.0",
+  "sqlglot>=25",
+  "faker>=28",
+  "numpy>=2.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
