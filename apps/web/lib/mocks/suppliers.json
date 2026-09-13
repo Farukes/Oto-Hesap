@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "Anadolu Elektronik Toptan",
+    "contact_channel": "telegram",
+    "contact_address": "5512345678",
+    "lead_time_days": 3
+  },
+  {
+    "id": 2,
+    "name": "Ege Aksesuar Dağıtım",
+    "contact_channel": "telegram",
+    "contact_address": "5598765432",
+    "lead_time_days": 4
+  },
+  {
+    "id": 3,
+    "name": "Marmara Kablo Sanayi",
+    "contact_channel": "email",
+    "contact_address": "siparis@marmarakablo.example",
+    "lead_time_days": 2
+  },
+  {
+    "id": 4,
+    "name": "Boğaziçi Tech İthalat",
+    "contact_channel": "telegram",
+    "contact_address": "5523456789",
+    "lead_time_days": 5
+  },
+  {
+    "id": 5,
+    "name": "Karadeniz Kılıf Atölyesi",
+    "contact_channel": "email",
+    "contact_address": "uretim@karadenizkilif.example",
+    "lead_time_days": 3
+  }
+]

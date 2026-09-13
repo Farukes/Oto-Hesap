@@ -1,0 +1,498 @@
+[
+ {
+  "id": 1,
+  "spent_at": "2026-04-01T06:41:00Z",
+  "category": "kira",
+  "amount": 14000,
+  "vendor": "Kadıköy Emlak Yönetimi",
+  "note": "Mağaza kirası"
+ },
+ {
+  "id": 2,
+  "spent_at": "2026-04-01T06:50:00Z",
+  "category": "maas",
+  "amount": 31500,
+  "vendor": "Personel bordrosu",
+  "note": "2 çalışan"
+ },
+ {
+  "id": 3,
+  "spent_at": "2026-04-05T08:36:00Z",
+  "category": "elektrik",
+  "amount": 3313,
+  "vendor": "BEDAŞ",
+  "note": null
+ },
+ {
+  "id": 4,
+  "spent_at": "2026-04-09T08:35:00Z",
+  "category": "kargo",
+  "amount": 662,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 5,
+  "spent_at": "2026-04-21T12:55:00Z",
+  "category": "tedarik",
+  "amount": 12550,
+  "vendor": "Karadeniz Kılıf Atölyesi",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 6,
+  "spent_at": "2026-04-22T07:28:00Z",
+  "category": "tedarik",
+  "amount": 13227,
+  "vendor": "Karadeniz Kılıf Atölyesi",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 7,
+  "spent_at": "2026-04-23T07:32:00Z",
+  "category": "reklam",
+  "amount": 2014,
+  "vendor": "Google Ads",
+  "note": null
+ },
+ {
+  "id": 8,
+  "spent_at": "2026-04-24T15:44:00Z",
+  "category": "reklam",
+  "amount": 1600,
+  "vendor": "Google Ads",
+  "note": null
+ },
+ {
+  "id": 9,
+  "spent_at": "2026-04-25T12:37:00Z",
+  "category": "kargo",
+  "amount": 885,
+  "vendor": "Yurtiçi Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 10,
+  "spent_at": "2026-04-26T10:43:00Z",
+  "category": "kargo",
+  "amount": 506,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 11,
+  "spent_at": "2026-05-01T06:04:00Z",
+  "category": "kira",
+  "amount": 14000,
+  "vendor": "Kadıköy Emlak Yönetimi",
+  "note": "Mağaza kirası"
+ },
+ {
+  "id": 12,
+  "spent_at": "2026-05-01T06:27:00Z",
+  "category": "maas",
+  "amount": 31500,
+  "vendor": "Personel bordrosu",
+  "note": "2 çalışan"
+ },
+ {
+  "id": 13,
+  "spent_at": "2026-05-04T12:39:00Z",
+  "category": "reklam",
+  "amount": 2198,
+  "vendor": "Trendyol Reklam",
+  "note": null
+ },
+ {
+  "id": 14,
+  "spent_at": "2026-05-05T08:25:00Z",
+  "category": "elektrik",
+  "amount": 2229,
+  "vendor": "BEDAŞ",
+  "note": null
+ },
+ {
+  "id": 15,
+  "spent_at": "2026-05-09T08:39:00Z",
+  "category": "reklam",
+  "amount": 2741,
+  "vendor": "Google Ads",
+  "note": null
+ },
+ {
+  "id": 16,
+  "spent_at": "2026-05-16T09:17:00Z",
+  "category": "tedarik",
+  "amount": 6306,
+  "vendor": "Marmara Kablo Sanayi",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 17,
+  "spent_at": "2026-05-19T12:41:00Z",
+  "category": "kargo",
+  "amount": 501,
+  "vendor": "Yurtiçi Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 18,
+  "spent_at": "2026-05-20T11:32:00Z",
+  "category": "tedarik",
+  "amount": 10554,
+  "vendor": "Marmara Kablo Sanayi",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 19,
+  "spent_at": "2026-05-29T11:06:00Z",
+  "category": "kargo",
+  "amount": 984,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 20,
+  "spent_at": "2026-05-30T08:30:00Z",
+  "category": "kargo",
+  "amount": 1550,
+  "vendor": "Yurtiçi Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 21,
+  "spent_at": "2026-06-01T06:10:00Z",
+  "category": "kira",
+  "amount": 14000,
+  "vendor": "Kadıköy Emlak Yönetimi",
+  "note": "Mağaza kirası"
+ },
+ {
+  "id": 22,
+  "spent_at": "2026-06-01T06:57:00Z",
+  "category": "maas",
+  "amount": 31500,
+  "vendor": "Personel bordrosu",
+  "note": "2 çalışan"
+ },
+ {
+  "id": 23,
+  "spent_at": "2026-06-05T08:11:00Z",
+  "category": "elektrik",
+  "amount": 2173,
+  "vendor": "BEDAŞ",
+  "note": null
+ },
+ {
+  "id": 24,
+  "spent_at": "2026-06-10T12:23:00Z",
+  "category": "kargo",
+  "amount": 1004,
+  "vendor": "MNG Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 25,
+  "spent_at": "2026-06-11T15:56:00Z",
+  "category": "kargo",
+  "amount": 1128,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 26,
+  "spent_at": "2026-06-12T09:10:00Z",
+  "category": "kargo",
+  "amount": 1152,
+  "vendor": "MNG Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 27,
+  "spent_at": "2026-06-14T10:40:00Z",
+  "category": "tedarik",
+  "amount": 10058,
+  "vendor": "Anadolu Elektronik Toptan",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 28,
+  "spent_at": "2026-06-14T11:01:00Z",
+  "category": "reklam",
+  "amount": 1993,
+  "vendor": "Google Ads",
+  "note": null
+ },
+ {
+  "id": 29,
+  "spent_at": "2026-06-16T09:20:00Z",
+  "category": "reklam",
+  "amount": 1463,
+  "vendor": "Google Ads",
+  "note": null
+ },
+ {
+  "id": 30,
+  "spent_at": "2026-06-22T09:01:00Z",
+  "category": "tedarik",
+  "amount": 14018,
+  "vendor": "Anadolu Elektronik Toptan",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 31,
+  "spent_at": "2026-07-01T06:29:00Z",
+  "category": "kira",
+  "amount": 14000,
+  "vendor": "Kadıköy Emlak Yönetimi",
+  "note": "Mağaza kirası"
+ },
+ {
+  "id": 32,
+  "spent_at": "2026-07-01T06:56:00Z",
+  "category": "maas",
+  "amount": 31500,
+  "vendor": "Personel bordrosu",
+  "note": "2 çalışan"
+ },
+ {
+  "id": 33,
+  "spent_at": "2026-07-03T10:43:00Z",
+  "category": "kargo",
+  "amount": 397,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 34,
+  "spent_at": "2026-07-05T08:56:00Z",
+  "category": "elektrik",
+  "amount": 2469,
+  "vendor": "BEDAŞ",
+  "note": null
+ },
+ {
+  "id": 35,
+  "spent_at": "2026-07-09T11:00:00Z",
+  "category": "reklam",
+  "amount": 1677,
+  "vendor": "Trendyol Reklam",
+  "note": null
+ },
+ {
+  "id": 36,
+  "spent_at": "2026-07-18T07:47:00Z",
+  "category": "tedarik",
+  "amount": 8264,
+  "vendor": "Ege Aksesuar Dağıtım",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 37,
+  "spent_at": "2026-07-18T14:17:00Z",
+  "category": "tedarik",
+  "amount": 8080,
+  "vendor": "Karadeniz Kılıf Atölyesi",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 38,
+  "spent_at": "2026-07-19T08:45:00Z",
+  "category": "kargo",
+  "amount": 911,
+  "vendor": "MNG Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 39,
+  "spent_at": "2026-07-24T09:50:00Z",
+  "category": "reklam",
+  "amount": 2729,
+  "vendor": "Trendyol Reklam",
+  "note": null
+ },
+ {
+  "id": 40,
+  "spent_at": "2026-07-24T14:37:00Z",
+  "category": "kargo",
+  "amount": 663,
+  "vendor": "MNG Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 41,
+  "spent_at": "2026-08-01T06:31:00Z",
+  "category": "kira",
+  "amount": 14000,
+  "vendor": "Kadıköy Emlak Yönetimi",
+  "note": "Mağaza kirası"
+ },
+ {
+  "id": 42,
+  "spent_at": "2026-08-01T06:48:00Z",
+  "category": "maas",
+  "amount": 31500,
+  "vendor": "Personel bordrosu",
+  "note": "2 çalışan"
+ },
+ {
+  "id": 43,
+  "spent_at": "2026-08-03T12:22:00Z",
+  "category": "kargo",
+  "amount": 1536,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 44,
+  "spent_at": "2026-08-04T12:51:00Z",
+  "category": "kargo",
+  "amount": 885,
+  "vendor": "MNG Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 45,
+  "spent_at": "2026-08-04T15:19:00Z",
+  "category": "reklam",
+  "amount": 2530,
+  "vendor": "Meta Ads",
+  "note": "Instagram kampanyası"
+ },
+ {
+  "id": 46,
+  "spent_at": "2026-08-05T08:57:00Z",
+  "category": "elektrik",
+  "amount": 2373,
+  "vendor": "BEDAŞ",
+  "note": null
+ },
+ {
+  "id": 47,
+  "spent_at": "2026-08-12T09:14:00Z",
+  "category": "tedarik",
+  "amount": 10357,
+  "vendor": "Boğaziçi Tech İthalat",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 48,
+  "spent_at": "2026-08-15T09:09:00Z",
+  "category": "kargo",
+  "amount": 1249,
+  "vendor": "MNG Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 49,
+  "spent_at": "2026-08-25T10:20:00Z",
+  "category": "kargo",
+  "amount": 1136,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 50,
+  "spent_at": "2026-08-26T10:11:00Z",
+  "category": "reklam",
+  "amount": 2680,
+  "vendor": "Trendyol Reklam",
+  "note": null
+ },
+ {
+  "id": 51,
+  "spent_at": "2026-08-27T08:02:00Z",
+  "category": "tedarik",
+  "amount": 12835,
+  "vendor": "Karadeniz Kılıf Atölyesi",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 52,
+  "spent_at": "2026-09-01T06:28:00Z",
+  "category": "kira",
+  "amount": 14000,
+  "vendor": "Kadıköy Emlak Yönetimi",
+  "note": "Mağaza kirası"
+ },
+ {
+  "id": 53,
+  "spent_at": "2026-09-01T06:35:00Z",
+  "category": "maas",
+  "amount": 31500,
+  "vendor": "Personel bordrosu",
+  "note": "2 çalışan"
+ },
+ {
+  "id": 54,
+  "spent_at": "2026-09-03T14:44:00Z",
+  "category": "reklam",
+  "amount": 3927,
+  "vendor": "Trendyol Reklam",
+  "note": null
+ },
+ {
+  "id": 55,
+  "spent_at": "2026-09-05T08:30:00Z",
+  "category": "elektrik",
+  "amount": 2886,
+  "vendor": "BEDAŞ",
+  "note": null
+ },
+ {
+  "id": 56,
+  "spent_at": "2026-09-06T12:27:00Z",
+  "category": "tedarik",
+  "amount": 5574,
+  "vendor": "Boğaziçi Tech İthalat",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 57,
+  "spent_at": "2026-09-07T08:41:00Z",
+  "category": "kargo",
+  "amount": 974,
+  "vendor": "Yurtiçi Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 58,
+  "spent_at": "2026-09-08T09:13:00Z",
+  "category": "kargo",
+  "amount": 1538,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 59,
+  "spent_at": "2026-09-08T12:08:00Z",
+  "category": "reklam",
+  "amount": 5128,
+  "vendor": "Trendyol Reklam",
+  "note": null
+ },
+ {
+  "id": 60,
+  "spent_at": "2026-09-11T07:33:00Z",
+  "category": "kargo",
+  "amount": 1496,
+  "vendor": "Yurtiçi Kargo",
+  "note": "Online sipariş gönderimleri"
+ },
+ {
+  "id": 61,
+  "spent_at": "2026-09-12T07:07:00Z",
+  "category": "tedarik",
+  "amount": 8420,
+  "vendor": "Ege Aksesuar Dağıtım",
+  "note": "Ürün alımı"
+ },
+ {
+  "id": 62,
+  "spent_at": "2026-09-12T12:49:00Z",
+  "category": "kargo",
+  "amount": 1145,
+  "vendor": "Aras Kargo",
+  "note": "Online sipariş gönderimleri"
+ }
+]

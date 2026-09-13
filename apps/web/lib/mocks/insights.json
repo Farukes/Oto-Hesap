@@ -1,0 +1,26 @@
+[
+  {
+    "id": "expense_change",
+    "title": "Reklam gideri arttı",
+    "body": "Reklam gideri geçen aya göre %38 arttı (5.940 ₺ → 8.200 ₺).",
+    "severity": "warn",
+    "metric": "expense.reklam",
+    "change_pct": 38
+  },
+  {
+    "id": "net_trend",
+    "title": "Fark yükseliyor",
+    "body": "Ağustos farkı (gelir − gider) Temmuz'a göre %143 arttı.",
+    "severity": "info",
+    "metric": "net",
+    "change_pct": 143
+  },
+  {
+    "id": "critical_stock",
+    "title": "2 ürün kritik stokta",
+    "body": "USB-C Hızlı Şarj Kablosu 1 m, Powerbank 20.000 mAh için sipariş taslağı oluşturulabilir.",
+    "severity": "critical",
+    "metric": "critical_count",
+    "change_pct": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "created_at": "2026-08-21T07:40:00Z",
+    "product_id": 4,
+    "supplier_id": 4,
+    "qty": 21,
+    "est_amount": 12810,
+    "status": "sent",
+    "message_text": "Merhaba Boğaziçi Tech İthalat, OtoHesap üzerinden sipariş talebi: Spor Kulaklık Su Geçirmez × 21 adet. Tahmini tutar 12.810,00 ₺. Teslim: 5 gün. Onay için yanıtlayabilirsiniz. — OtoHesap Demo Mağaza",
+    "sent_at": "2026-08-21T07:52:00Z",
+    "product": "Spor Kulaklık Su Geçirmez",
+    "supplier": "Boğaziçi Tech İthalat",
+    "supplier_channel": "telegram",
+    "notify_ref": "tg:48213"
+  },
+  {
+    "id": 2,
+    "created_at": "2026-08-04T06:15:00Z",
+    "product_id": 8,
+    "supplier_id": 5,
+    "qty": 17,
+    "est_amount": 3570,
+    "status": "rejected",
+    "message_text": "Merhaba Karadeniz Kılıf Atölyesi, OtoHesap üzerinden sipariş talebi: Tablet Standlı Kılıf 11\" × 17 adet. Tahmini tutar 3.570,00 ₺. Teslim: 3 gün. Onay için yanıtlayabilirsiniz. — OtoHesap Demo Mağaza",
+    "sent_at": null,
+    "product": "Tablet Standlı Kılıf 11\"",
+    "supplier": "Karadeniz Kılıf Atölyesi",
+    "supplier_channel": "email",
+    "notify_ref": null
+  }
+]
