@@ -23,7 +23,8 @@ make seed                                # sentetik 6 ay veri (deterministik, se
 make api                                 # http://localhost:8000/docs
 make web                                 # http://localhost:3000
 make test                                # API testleri (ayrı test veritabanı)
-make warmup                              # demodan 10 dk önce
+make doctor                              # bir şey çalışmıyorsa önce bunu koş
+make demo                                # demo öncesi: veri sıfırla + ısıt + kontrol listesi
 ```
 Ayrıntı: [specs/001-otohesap-mvp/quickstart.md](specs/001-otohesap-mvp/quickstart.md) · demo akışı: [docs/demo-senaryosu.md](docs/demo-senaryosu.md)
 

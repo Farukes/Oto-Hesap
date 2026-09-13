@@ -1,5 +1,5 @@
 # OtoHesap — günlük komutlar. `make help`
-.PHONY: help setup api web seed test lint warmup eval
+.PHONY: help setup api web seed test lint warmup eval doctor demo
 help:
 	@grep -E '^[a-z]+:.*#' Makefile | sed 's/:.*#/ — /'
 setup:   # hook + .env + bağımlılıklar
@@ -15,6 +15,10 @@ test:    # API testleri (ayrı test veritabanı)
 lint:    # ruff + eslint
 	cd apps/api && uv run ruff format --check . && uv run ruff check .
 	cd apps/web && bun run lint
+doctor:  # kurulum teşhisi: araçlar, .env, veritabanı, servisler
+	./scripts/doctor.sh
+demo:    # demo öncesi: veriyi sıfırla, siparişleri temizle, ısıt, kontrol listesi
+	./scripts/demo-reset.sh
 warmup:  # demodan 10 dk önce: API + DB + LLM ısındır
 	./scripts/warmup.sh
 eval:    # 15 soruluk bankayı gerçek sağlayıcıyla koş, gold SQL sonucuyla karşılaştır (LLM_PROVIDER .env'den)
