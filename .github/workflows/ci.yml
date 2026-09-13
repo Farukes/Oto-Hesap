@@ -1,0 +1,83 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  api:
+    name: api (ruff + pytest)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: otohesap_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/otohesap_test
+      DATABASE_URL_RO: postgresql://postgres:postgres@localhost:5432/otohesap_test
+      LLM_PROVIDER: fake
+    steps:
+      - uses: actions/checkout@v4
+      - name: api var mı?
+        id: chk
+        run: |
+          if [ -f apps/api/pyproject.toml ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; else echo "ok=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/setup-python@v5
+        if: steps.chk.outputs.ok == 'true'
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v5
+        if: steps.chk.outputs.ok == 'true'
+      - name: bağımlılıklar
+        if: steps.chk.outputs.ok == 'true'
+        working-directory: apps/api
+        run: uv sync --all-extras --dev
+      - name: ruff
+        if: steps.chk.outputs.ok == 'true'
+        working-directory: apps/api
+        run: uv run ruff check . && uv run ruff format --check .
+      - name: pytest
+        if: steps.chk.outputs.ok == 'true'
+        working-directory: apps/api
+        run: uv run pytest -q
+
+  web:
+    name: web (lint + build)
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    steps:
+      - uses: actions/checkout@v4
+      - name: web var mı?
+        id: chk
+        run: |
+          if [ -f apps/web/package.json ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; else echo "ok=false" >> "$GITHUB_OUTPUT"; fi
+      - uses: oven-sh/setup-bun@v2
+        if: steps.chk.outputs.ok == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.chk.outputs.ok == 'true'
+        with:
+          node-version: "22"
+      - name: kur + lint + build
+        if: steps.chk.outputs.ok == 'true'
+        working-directory: apps/web
+        run: |
+          if [ -f bun.lock ] || [ -f bun.lockb ]; then
+            bun install --frozen-lockfile
+            bun run lint --if-present
+            bun run build
+          else
+            npm ci
+            npm run lint --if-present
+            npm run build
+          fi
