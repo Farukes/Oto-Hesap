@@ -37,7 +37,8 @@ def _env_value(name: str, default: str) -> str:
     if env_file.exists():
         for line in env_file.read_text().splitlines():
             if line.startswith(name + "="):
-                return line.split("=", 1)[1].split("#", 1)[0].strip().strip('"')
+                value = line.split("=", 1)[1].split("#", 1)[0].strip().strip('"')
+                return value or default  # boş satır → yer tutucu kalır
     return default
 
 
