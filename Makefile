@@ -1,5 +1,5 @@
 # OtoHesap — günlük komutlar. `make help`
-.PHONY: help setup api web seed test lint warmup eval doctor demo
+.PHONY: help setup api web web-prod seed test lint warmup eval doctor demo
 help:
 	@grep -E '^[a-z]+:.*#' Makefile | sed 's/:.*#/ — /'
 setup:   # hook + .env + bağımlılıklar
@@ -8,6 +8,8 @@ api:     # FastAPI geliştirme sunucusu :8000
 	cd apps/api && uv run uvicorn app.main:app --reload --port 8000
 web:     # Next.js geliştirme sunucusu :3000
 	cd apps/web && bun dev
+web-prod: # sunum için: üretim derlemesi + sunucu :3000 (dev'den hızlı ve kararlı)
+	cd apps/web && rm -rf .next/dev/types && bun run build && bun run start -- -p 3000
 seed:    # sentetik veriyi sıfırla ve yükle (DATABASE_URL .env'den)
 	uv run --project apps/api python data/seed.py --reset
 test:    # API testleri (ayrı test veritabanı)
