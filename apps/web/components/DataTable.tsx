@@ -22,6 +22,10 @@ interface DataTableProps<T> {
   caption?: string;
 }
 
+/* Not: yeniden yüklerken gövde ESKİDEN opacity-60 ile soluyordu — ikincil metin
+   beyaz üstünde 2.8:1'e düşüyordu. Artık metin tam kontrastta kalır, yükleme
+   durumu aria-busy + ekran okuyucu bildirimiyle duyurulur. */
+
 const ALIGN = { left: "text-left", right: "text-right", center: "text-center" } as const;
 
 export function DataTable<T>({ columns, rows, rowKey, loading = false, error, rowClassName, empty, dense = false, caption }: DataTableProps<T>) {
@@ -30,7 +34,12 @@ export function DataTable<T>({ columns, rows, rowKey, loading = false, error, ro
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[560px] border-collapse text-[13.5px]">
+      {loading && rows.length > 0 && (
+        <p role="status" className="sr-only">
+          {caption ?? "Tablo"} yenileniyor…
+        </p>
+      )}
+      <table aria-busy={loading || undefined} className="w-full min-w-[560px] border-collapse text-[13.5px]">
         {caption && <caption className="sr-only">{caption}</caption>}
         <thead>
           <tr className="border-b border-line bg-surface-2 text-[12px] font-medium uppercase tracking-wide text-muted">
@@ -41,7 +50,7 @@ export function DataTable<T>({ columns, rows, rowKey, loading = false, error, ro
             ))}
           </tr>
         </thead>
-        <tbody className={loading && rows.length > 0 ? "opacity-60 transition-opacity" : "transition-opacity"}>
+        <tbody>
           {showSkeleton &&
             Array.from({ length: 5 }).map((_, i) => (
               <tr key={`sk-${i}`} className="border-b border-line/70">

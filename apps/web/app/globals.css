@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
 /* OtoHesap poster renk dili — açık tema, sistem yazı tipi.
-   Kontrast (WCAG AA ≥ 4.5:1, ölçüldü):
+   Kontrast (WCAG 2.1 AA, hesaplanarak ölçüldü — bkz. rapor tablosu):
    navy/mint 13.3 · brand-strong/white 5.3 · brand-strong/mint 4.7 · danger/white 5.4 · danger-ink/danger-tint 5.7
-   warn-ink/white 5.9 · warn-ink/warn-tint 5.4 · info-ink/info-tint 5.8 · muted/white 7.0 · white/navy 14.8
-   Yalın #1C8C6E yalnız metin dışı vurguda (grafik, çerçeve, işaret); metin ve buton zemini #187A60. */
+   warn-ink/white 5.9 · warn-ink/warn-tint 5.4 · info-ink/info-tint 5.8 · muted/white 7.0 · muted/surface-2 6.7 · white/navy 14.8
+   Yalın #1C8C6E yalnız metin dışı vurguda (grafik, çerçeve, işaret); metin ve buton zemini #187A60.
+   --color-field yalnız form denetimi kenarlıkları içindir: beyaz 3.4:1, surface-2 3.3:1, nane 3.1:1 (WCAG 1.4.11).
+   --color-line dekoratif ayraç/kart kenarıdır; metin taşımaz, eşik aranmaz. */
 @theme {
   --color-navy: #0f2a3c;
   --color-navy-soft: #1b3d52;
@@ -24,6 +26,7 @@
   --color-ink: #0f2a3c;
   --color-muted: #4b5b66;
   --color-line: #d6e3dd;
+  --color-field: #769087;
   --color-surface: #ffffff;
   --color-surface-2: #f4faf7;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -40,6 +43,44 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* --------------------------------------------------------------- Odak halkası
+   Arka plandan bağımsız görünür halka: outline + offset. Rengi --ring ile
+   devralınır; lacivert yüzeylerde (sidebar) beyaza çevrilir.
+   brand-strong: beyazda 5.3:1, nane üstünde 4.7:1 — eşik 3:1. */
+:root {
+  --ring: var(--color-brand-strong);
+}
+
+.focus-ring:focus-visible,
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+/* --------------------------------------------------------- Dokunma hedefleri
+   Yalnız dokunmatik/kaba işaretçide 44×44'e büyür; masaüstü görünümü değişmez.
+   Satır içi metin bağlantıları WCAG 2.5.5/2.5.8'de zaten muaftır. */
+@media (pointer: coarse) {
+  .tap {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .tap-y {
+    min-height: 44px;
+  }
 }
 
 /* Native <dialog> */
@@ -65,12 +106,28 @@ dialog[open] {
 /* Recharts odak halkası */
 .recharts-wrapper:focus-visible,
 .recharts-surface:focus-visible {
-  outline: 2px solid var(--color-brand);
+  outline: 2px solid var(--ring);
   outline-offset: 2px;
 }
 
+/* ------------------------------------------------- prefers-reduced-motion
+   Hareket azaltma açıkken: diyalog animasyonu, iskelet nabzı, spinner dönüşü,
+   geçişler ve yumuşak kaydırma kapanır. Odak halkası ve düzen korunur. */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   dialog[open] {
     animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -163,7 +163,7 @@ function EditableNumber({ value, label, onSave }: { value: number; label: string
         onChange={(e) => setDraft(e.target.value)}
         onBlur={() => void commit()}
         onKeyDown={onKey}
-        className="h-8 w-20 rounded-md border border-brand bg-surface px-2 text-right text-[13.5px] tabular-nums text-navy focus:outline-none focus:ring-2 focus:ring-brand/30"
+        className="tap-y h-8 w-20 rounded-md border border-brand-strong bg-surface px-2 text-right text-[13.5px] tabular-nums text-navy"
       />
     );
   }
@@ -174,7 +174,7 @@ function EditableNumber({ value, label, onSave }: { value: number; label: string
       onClick={start}
       disabled={busy}
       aria-label={`${label}: ${value}, düzenlemek için tıklayın`}
-      className="h-8 min-w-14 rounded-md border border-transparent px-2 text-right tabular-nums text-navy hover:border-line hover:bg-surface disabled:opacity-60"
+      className="tap-y h-8 min-w-14 rounded-md border border-transparent px-2 text-right tabular-nums text-navy hover:border-field hover:bg-surface disabled:cursor-not-allowed disabled:text-muted"
     >
       {busy ? "…" : formatInt(value)}
     </button>

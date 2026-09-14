@@ -30,6 +30,9 @@ export function Modal({ open, title, onClose, children, footer, size = "md" }: M
         e.preventDefault();
         onClose();
       }}
+      // Diyalog başka bir yoldan kapanırsa (Esc dışı native kapanış) React
+      // durumu senkron kalsın; aksi halde modal bir daha açılamaz.
+      onClose={onClose}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -42,7 +45,7 @@ export function Modal({ open, title, onClose, children, footer, size = "md" }: M
         <h2 id="modal-title" className="text-[15.5px] font-semibold text-navy">
           {title}
         </h2>
-        <button type="button" onClick={onClose} className="rounded-md p-1 text-muted hover:bg-mint hover:text-navy" aria-label="Kapat">
+        <button type="button" onClick={onClose} className="tap -mr-1 inline-flex items-center justify-center rounded-md p-1.5 text-muted hover:bg-mint hover:text-navy" aria-label="Kapat">
           <IconClose size={18} />
         </button>
       </div>

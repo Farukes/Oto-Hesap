@@ -13,7 +13,8 @@ interface EmptyStateProps {
 export function EmptyState({ title, description, action, tone = "neutral", compact = false }: EmptyStateProps) {
   const Icon = tone === "danger" ? IconAlert : IconInfo;
   return (
-    <div className={`flex flex-col items-center justify-center text-center ${compact ? "py-6" : "py-10"}`}>
+    // Hata tonunda ekran okuyucuya anında duyurulur (WCAG 4.1.3 durum iletileri).
+    <div role={tone === "danger" ? "alert" : undefined} className={`flex flex-col items-center justify-center text-center ${compact ? "py-6" : "py-10"}`}>
       <div className={`mb-3 flex size-10 items-center justify-center rounded-full ${tone === "danger" ? "bg-danger-tint text-danger" : "bg-mint text-brand-strong"}`}>
         <Icon size={20} />
       </div>

@@ -30,7 +30,7 @@ export function InsightCard({ insight }: { insight: Insight }) {
         </div>
         <p className="mt-0.5 text-[13.5px] leading-snug text-muted">{body}</p>
         {href && (
-          <Link href={href} className="mt-1.5 inline-block text-[13px] font-medium text-brand-strong hover:underline">
+          <Link href={href} className="mt-1.5 inline-block rounded text-[13px] font-medium text-brand-strong hover:underline">
             {href === "/tedarik" ? "Tedarik ekranına git" : "Kayıtlara git"} →
           </Link>
         )}

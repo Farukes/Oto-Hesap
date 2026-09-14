@@ -15,9 +15,28 @@ import { useAsync } from "@/lib/use-async";
 
 const INCOME = "#1C8C6E";
 const EXPENSE = "#0F2A3C";
-const PIE = ["#1C8C6E", "#0F2A3C", "#B7791F", "#5FB49C", "#4A6478", "#C0392B", "#8FBFAF", "#7A5210"];
+// Her dilim beyaz üzerinde ≥3:1 (WCAG 1.4.11 grafik nesnesi).
+// Eskiden #5FB49C (2.47:1) ve #8FBFAF (2.05:1) vardı; koyulaştırıldı ve
+// ilk altı sıraya birbirinden ayırt edilebilir tonlar alındı.
+const PIE = ["#1C8C6E", "#0F2A3C", "#B7791F", "#4A6478", "#C0392B", "#7A5210", "#3E8F79", "#5E8C7E"];
 
 const moneyTip = (value: unknown) => formatMoney(typeof value === "number" ? value : Number(value));
+
+/** Grafiğin ekran okuyucuya okunan kısa özeti (role="img" + aria-label). */
+function barSummary(rows: { full: string; income: number; expense: number }[]): string {
+  const head = rows
+    .slice(0, 4)
+    .map((m) => `${m.full}: ${formatMoney(m.income)} gelir, ${formatMoney(m.expense)} gider`)
+    .join("; ");
+  const tail = rows.length > 4 ? `; ve ${rows.length - 4} ay daha` : "";
+  return `Aylık gelir–gider çubuk grafiği, ${rows.length} ay. ${head}${tail}.`;
+}
+
+function pieSummary(rows: { name: string; value: number; share: number }[]): string {
+  const parts = rows.slice(0, 6).map((c) => `${c.name} ${formatShare(c.share)} (${formatMoney(c.value)})`).join("; ");
+  const tail = rows.length > 6 ? `; ve ${rows.length - 6} kategori daha` : "";
+  return `Gider kategorileri halka grafiği, ${rows.length} kategori. ${parts}${tail}.`;
+}
 
 export function OverviewView() {
   const [period, setPeriod] = useState<Period>("half");
@@ -36,7 +55,7 @@ export function OverviewView() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <PeriodTabs value={period} onChange={setPeriod} />
-        <div className="text-[12.5px] text-muted">
+        <div role="status" aria-busy={summary.loading || undefined} className="text-[12.5px] text-muted">
           {s ? (
             <>
               Son güncelleme <span className="font-medium text-navy">{formatTime(s.updated_at)}</span>
@@ -49,7 +68,7 @@ export function OverviewView() {
 
       {summary.error && <Notice tone="danger">Özet alınamadı: {summary.error}</Notice>}
 
-      <div className="grid gap-3 sm:grid-cols-2 md:gap-4 xl:grid-cols-4">
+      <div aria-busy={(summary.loading && !s) || undefined} className="grid gap-3 sm:grid-cols-2 md:gap-4 xl:grid-cols-4">
         <KpiCard label="Gelir" value={formatMoney(s?.income)} hint={hint} loading={summary.loading && !s} />
         <KpiCard label="Gider" value={formatMoney(s?.expense)} hint={hint} loading={summary.loading && !s} />
         <KpiCard
@@ -89,26 +108,28 @@ export function OverviewView() {
           ) : bars.length === 0 ? (
             <EmptyState title="Veri yok" description="Satış veya gider kaydı girildiğinde aylık görünüm burada oluşur." compact />
           ) : (
-            <BarChart responsive width="100%" height={288} data={bars} margin={{ top: 8, right: 8, left: 0, bottom: 0 }} barCategoryGap="28%">
-              <CartesianGrid vertical={false} stroke="#D6E3DD" />
-              <XAxis dataKey="label" tickLine={false} axisLine={{ stroke: "#D6E3DD" }} tick={{ fill: "#4B5B66", fontSize: 12 }} />
-              <YAxis
-                tickLine={false}
-                axisLine={false}
-                width={64}
-                tick={{ fill: "#4B5B66", fontSize: 12 }}
-                tickFormatter={(v: number) => formatMoneyCompact(v)}
-              />
-              <Tooltip
-                cursor={{ fill: "#EAF5F1" }}
-                formatter={moneyTip}
-                labelFormatter={(_, payload) => (payload?.[0]?.payload as { full?: string } | undefined)?.full ?? ""}
-                contentStyle={{ borderRadius: 10, border: "1px solid #D6E3DD", fontSize: 13 }}
-              />
-              <Legend iconType="circle" iconSize={9} wrapperStyle={{ fontSize: 12.5, paddingTop: 8 }} />
-              <Bar dataKey="income" name="Gelir" fill={INCOME} radius={[4, 4, 0, 0]} />
-              <Bar dataKey="expense" name="Gider" fill={EXPENSE} radius={[4, 4, 0, 0]} />
-            </BarChart>
+            <div role="img" aria-label={barSummary(bars)}>
+              <BarChart responsive width="100%" height={288} data={bars} margin={{ top: 8, right: 8, left: 0, bottom: 0 }} barCategoryGap="28%">
+                <CartesianGrid vertical={false} stroke="#D6E3DD" />
+                <XAxis dataKey="label" tickLine={false} axisLine={{ stroke: "#D6E3DD" }} tick={{ fill: "#4B5B66", fontSize: 12 }} />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  width={64}
+                  tick={{ fill: "#4B5B66", fontSize: 12 }}
+                  tickFormatter={(v: number) => formatMoneyCompact(v)}
+                />
+                <Tooltip
+                  cursor={{ fill: "#EAF5F1" }}
+                  formatter={moneyTip}
+                  labelFormatter={(_, payload) => (payload?.[0]?.payload as { full?: string } | undefined)?.full ?? ""}
+                  contentStyle={{ borderRadius: 10, border: "1px solid #D6E3DD", fontSize: 13 }}
+                />
+                <Legend iconType="circle" iconSize={9} wrapperStyle={{ fontSize: 12.5, paddingTop: 8 }} />
+                <Bar dataKey="income" name="Gelir" fill={INCOME} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="expense" name="Gider" fill={EXPENSE} radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </div>
           )}
         </Card>
 
@@ -121,7 +142,7 @@ export function OverviewView() {
             <EmptyState title="Bu dönemde gider yok" description="Kayıtlar ekranından gider ekleyince dağılım burada görünür." compact />
           ) : (
             <div className="flex flex-col items-center gap-4 sm:flex-row xl:flex-col">
-              <div className="w-[190px] shrink-0">
+              <div className="w-[190px] shrink-0" role="img" aria-label={pieSummary(slices)}>
                 <PieChart responsive width="100%" height={190} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                   <Pie data={slices} dataKey="value" nameKey="name" innerRadius={54} outerRadius={88} paddingAngle={2} stroke="#FFFFFF" strokeWidth={2}>
                     {slices.map((_, i) => (

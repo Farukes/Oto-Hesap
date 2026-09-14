@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { Badge } from "../Badge";
 import { DataTable, type Column } from "../DataTable";
 import { IconDownload, IconEdit, IconPlus, IconSearch, IconTrash } from "../Icons";
@@ -41,8 +41,8 @@ function Pagination({ offset, total, onChange }: { offset: number; total: number
   const from = offset + 1;
   const to = Math.min(offset + PAGE, total);
   return (
-    <div className="flex items-center justify-between gap-3 border-t border-line px-4 py-2.5 text-[13px] text-muted">
-      <span>
+    <nav aria-label="Sayfalama" className="flex items-center justify-between gap-3 border-t border-line px-4 py-2.5 text-[13px] text-muted">
+      <span role="status">
         {formatInt(from)}–{formatInt(to)} / {formatInt(total)}
       </span>
       <div className="flex gap-2">
@@ -53,33 +53,47 @@ function Pagination({ offset, total, onChange }: { offset: number; total: number
           Sonraki
         </Button>
       </div>
-    </div>
+    </nav>
   );
 }
+
+const TABS = [
+  { value: "sales", label: "Satış" },
+  { value: "expenses", label: "Gider" },
+] as const;
 
 export function RecordsView() {
   const [tab, setTab] = useState<Tab>("sales");
   const [toast, setToast] = useState<ToastData | null>(null);
   const notify = useCallback((text: string, tone: ToastData["tone"] = "success") => setToast({ id: Date.now(), text, tone }), []);
   const closeToast = useCallback((id: number) => setToast((t) => (t?.id === id ? null : t)), []);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  // Sekme kalıbı: gruba tek Tab durağı, içinde ok tuşlarıyla geçiş.
+  function onTabKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const i = TABS.findIndex((t) => t.value === tab);
+    const next = e.key === "Home" ? 0 : e.key === "End" ? TABS.length - 1 : e.key === "ArrowRight" ? (i + 1) % TABS.length : (i - 1 + TABS.length) % TABS.length;
+    setTab(TABS[next].value);
+    listRef.current?.querySelectorAll<HTMLButtonElement>("[role=tab]")[next]?.focus();
+  }
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="tablist" aria-label="Kayıt türü" className="inline-flex rounded-lg border border-line bg-surface p-0.5">
-          {(
-            [
-              ["sales", "Satış"],
-              ["expenses", "Gider"],
-            ] as const
-          ).map(([value, label]) => (
+        <div ref={listRef} role="tablist" aria-label="Kayıt türü" onKeyDown={onTabKeyDown} className="inline-flex rounded-lg border border-field bg-surface p-0.5">
+          {TABS.map(({ value, label }) => (
             <button
               key={value}
+              id={`sekme-${value}`}
               type="button"
               role="tab"
               aria-selected={tab === value}
+              aria-controls={`panel-${value}`}
+              tabIndex={tab === value ? 0 : -1}
               onClick={() => setTab(value)}
-              className={`rounded-md px-4 py-1.5 text-[13.5px] font-medium transition-colors ${tab === value ? "bg-navy text-white" : "text-muted hover:bg-mint hover:text-navy"}`}
+              className={`tap-y rounded-md px-4 py-1.5 text-[13.5px] font-medium transition-colors ${tab === value ? "bg-navy text-white" : "text-muted hover:bg-mint hover:text-navy"}`}
             >
               {label}
             </button>
@@ -87,14 +101,16 @@ export function RecordsView() {
         </div>
         <a
           href={exportUrl(tab)}
-          className="inline-flex h-9 items-center gap-2 rounded-lg border border-line bg-surface px-3 text-[13px] font-medium text-navy hover:bg-mint"
+          className="tap-y inline-flex h-9 items-center gap-2 rounded-lg border border-field bg-surface px-3 text-[13px] font-medium text-navy hover:bg-mint"
         >
           <IconDownload size={16} />
           Dışa aktar (CSV)
         </a>
       </div>
 
-      {tab === "sales" ? <SalesPanel notify={notify} /> : <ExpensesPanel notify={notify} />}
+      <div id={`panel-${tab}`} role="tabpanel" aria-labelledby={`sekme-${tab}`} tabIndex={-1}>
+        {tab === "sales" ? <SalesPanel notify={notify} /> : <ExpensesPanel notify={notify} />}
+      </div>
       <Toast toast={toast} onClose={closeToast} />
     </div>
   );
@@ -128,10 +144,20 @@ function SalesPanel({ notify }: { notify: Notify }) {
       align: "right",
       render: (r) => (
         <div className="flex justify-end gap-1">
-          <button type="button" onClick={() => setEditing({ mode: "edit", row: r })} className="rounded-md p-1.5 text-muted hover:bg-mint hover:text-navy" aria-label="Düzenle">
+          <button
+            type="button"
+            onClick={() => setEditing({ mode: "edit", row: r })}
+            className="tap inline-flex items-center justify-center rounded-md p-1.5 text-muted hover:bg-mint hover:text-navy"
+            aria-label={`Düzenle: ${productName(r)}, ${formatMoney(r.total)}`}
+          >
             <IconEdit size={16} />
           </button>
-          <button type="button" onClick={() => setDeleting(r)} className="rounded-md p-1.5 text-muted hover:bg-danger-tint hover:text-danger" aria-label="Sil">
+          <button
+            type="button"
+            onClick={() => setDeleting(r)}
+            className="tap inline-flex items-center justify-center rounded-md p-1.5 text-muted hover:bg-danger-tint hover:text-danger"
+            aria-label={`Sil: ${productName(r)}, ${formatMoney(r.total)}`}
+          >
             <IconTrash size={16} />
           </button>
         </div>
@@ -144,7 +170,7 @@ function SalesPanel({ notify }: { notify: Notify }) {
       <Card padded={false}>
         <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
           <div className="relative min-w-0 flex-1 sm:max-w-xs">
-            <IconSearch size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+            <IconSearch size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" aria-hidden="true" />
             <Input
               value={q}
               onChange={(e) => {
@@ -156,7 +182,9 @@ function SalesPanel({ notify }: { notify: Notify }) {
               aria-label="Satışlarda ara"
             />
           </div>
-          <span className="text-[12.5px] text-muted">{list.data ? `${formatInt(list.data.total)} kayıt` : ""}</span>
+          <span role="status" className="text-[12.5px] text-muted">
+            {list.data ? `${formatInt(list.data.total)} kayıt` : ""}
+          </span>
           <Button variant="primary" size="sm" icon={<IconPlus size={16} />} className="ml-auto" onClick={() => setEditing({ mode: "create" })}>
             Yeni satış
           </Button>
@@ -360,10 +388,20 @@ function ExpensesPanel({ notify }: { notify: Notify }) {
       align: "right",
       render: (r) => (
         <div className="flex justify-end gap-1">
-          <button type="button" onClick={() => setEditing({ mode: "edit", row: r })} className="rounded-md p-1.5 text-muted hover:bg-mint hover:text-navy" aria-label="Düzenle">
+          <button
+            type="button"
+            onClick={() => setEditing({ mode: "edit", row: r })}
+            className="tap inline-flex items-center justify-center rounded-md p-1.5 text-muted hover:bg-mint hover:text-navy"
+            aria-label={`Düzenle: ${categoryLabel(r.category)}, ${formatMoney(r.amount)}`}
+          >
             <IconEdit size={16} />
           </button>
-          <button type="button" onClick={() => setDeleting(r)} className="rounded-md p-1.5 text-muted hover:bg-danger-tint hover:text-danger" aria-label="Sil">
+          <button
+            type="button"
+            onClick={() => setDeleting(r)}
+            className="tap inline-flex items-center justify-center rounded-md p-1.5 text-muted hover:bg-danger-tint hover:text-danger"
+            aria-label={`Sil: ${categoryLabel(r.category)}, ${formatMoney(r.amount)}`}
+          >
             <IconTrash size={16} />
           </button>
         </div>
@@ -376,7 +414,7 @@ function ExpensesPanel({ notify }: { notify: Notify }) {
       <Card padded={false}>
         <div className="flex flex-wrap items-center gap-3 border-b border-line px-4 py-3">
           <div className="relative min-w-0 flex-1 sm:max-w-xs">
-            <IconSearch size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+            <IconSearch size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" aria-hidden="true" />
             <Input
               value={q}
               onChange={(e) => {
@@ -388,7 +426,9 @@ function ExpensesPanel({ notify }: { notify: Notify }) {
               aria-label="Giderlerde ara"
             />
           </div>
-          <span className="text-[12.5px] text-muted">{list.data ? `${formatInt(list.data.total)} kayıt` : ""}</span>
+          <span role="status" className="text-[12.5px] text-muted">
+            {list.data ? `${formatInt(list.data.total)} kayıt` : ""}
+          </span>
           <Button variant="primary" size="sm" icon={<IconPlus size={16} />} className="ml-auto" onClick={() => setEditing({ mode: "create" })}>
             Yeni gider
           </Button>

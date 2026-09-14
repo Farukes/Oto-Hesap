@@ -16,7 +16,9 @@ export function AssistantView() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
+    // prefers-reduced-motion açıksa yumuşak kaydırma yapılmaz.
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    endRef.current?.scrollIntoView({ block: "end", behavior: reduce ? "auto" : "smooth" });
   }, [messages.length]);
 
   async function ask(question: string) {
@@ -52,7 +54,7 @@ export function AssistantView() {
         </p>
       </div>
 
-      <div className="mb-3 flex flex-wrap gap-2" aria-label="Hazır sorular">
+      <div className="mb-3 flex flex-wrap gap-2" role="group" aria-label="Hazır sorular">
         {suggestions.loading && !suggestions.data
           ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-8 w-44 rounded-full" />)
           : (suggestions.data ?? []).map((s) => (
@@ -61,15 +63,25 @@ export function AssistantView() {
                 type="button"
                 onClick={() => void ask(s)}
                 disabled={busy}
-                className="rounded-full border border-brand/40 bg-brand-tint px-3.5 py-1.5 text-[13px] font-medium text-brand-ink transition-colors hover:bg-brand/20 disabled:opacity-60"
+                className="tap-y rounded-full border border-brand/60 bg-brand-tint px-3.5 py-1.5 text-[13px] font-medium text-brand-ink transition-colors hover:bg-brand/20 disabled:cursor-not-allowed disabled:border-line disabled:bg-surface-2 disabled:text-muted"
               >
                 {s}
               </button>
             ))}
-        {suggestions.error && <span className="text-[12.5px] text-muted">Hazır sorular alınamadı: {suggestions.error}</span>}
+        {suggestions.error && (
+          <span role="status" className="text-[12.5px] text-muted">
+            Hazır sorular alınamadı: {suggestions.error}
+          </span>
+        )}
       </div>
 
-      <div className="flex-1 space-y-3 overflow-y-auto rounded-card border border-line bg-surface-2 p-4" aria-live="polite">
+      <div
+        className="flex-1 space-y-3 overflow-y-auto rounded-card border border-line bg-surface-2 p-4"
+        role="log"
+        aria-label="Sohbet"
+        aria-live="polite"
+        aria-busy={busy || undefined}
+      >
         {messages.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center text-center">
             <div className="mb-3 flex size-12 items-center justify-center rounded-full bg-mint text-brand-strong">

@@ -43,6 +43,7 @@ function ResultTable({ columns, rows }: { columns: string[]; rows: AssistantRow[
   return (
     <div className="mt-3 overflow-x-auto rounded-lg border border-line">
       <table className="w-full border-collapse text-[13px]">
+        <caption className="sr-only">Sorgu sonucu tablosu: {columns.join(", ")}</caption>
         <thead>
           <tr className="bg-surface-2 text-left text-[11.5px] font-medium uppercase tracking-wide text-muted">
             {columns.map((c) => (

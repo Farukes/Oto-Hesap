@@ -29,10 +29,10 @@ export function Toast({ toast, onClose }: { toast: ToastData | null; onClose: (i
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4 md:justify-end md:px-6">
-      <div role="status" className={`pointer-events-auto flex items-center gap-2.5 rounded-lg border px-3.5 py-2.5 text-sm font-medium ${cls}`}>
+      <div role={tone === "danger" ? "alert" : "status"} className={`pointer-events-auto flex items-center gap-2.5 rounded-lg border px-3.5 py-2.5 text-sm font-medium ${cls}`}>
         {tone === "success" ? <IconCheck size={18} /> : <IconInfo size={18} />}
         {toast.text}
-        <button type="button" onClick={() => onClose(toast.id)} className="ml-1 rounded p-0.5 opacity-70 hover:opacity-100" aria-label="Bildirimi kapat">
+        <button type="button" onClick={() => onClose(toast.id)} className="tap ml-1 inline-flex items-center justify-center rounded p-1" aria-label="Bildirimi kapat">
           <IconClose size={14} />
         </button>
       </div>

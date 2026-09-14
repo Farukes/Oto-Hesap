@@ -140,7 +140,7 @@ export function SupplyView() {
         ))}
       </div>
 
-      <section aria-label="Onay bekleyen taslaklar" className="space-y-3">
+      <section aria-label="Onay bekleyen taslaklar" aria-busy={(orders.loading && !d) || undefined} className="space-y-3">
         <h2 className="text-[15px] font-semibold text-navy">Onay bekleyen taslaklar</h2>
         {orders.loading && !d ? (
           <div className="grid gap-3 md:grid-cols-2">
@@ -185,7 +185,7 @@ export function SupplyView() {
                     </div>
                     <div className="text-[12.5px] text-muted">
                       {supplierName(o)} · #{o.id}
-                      {ref ? <span className="ml-2 text-[11.5px] text-muted/80">ref {ref}</span> : null}
+                      {ref ? <span className="ml-2 text-[11.5px] text-muted">ref {ref}</span> : null}
                     </div>
                   </div>
                   <div className="text-[12.5px] text-muted">
@@ -245,7 +245,7 @@ function DraftCard({ order: o, busy, error, onApprove, onReject }: { order: Orde
       </dl>
       {o.message_text && (
         <details className="group mx-5 mt-3 rounded-lg border border-line bg-surface-2">
-          <summary className="flex cursor-pointer select-none items-center gap-1.5 px-3 py-2 text-[12.5px] font-medium text-navy [&::-webkit-details-marker]:hidden">
+          <summary className="tap-y flex cursor-pointer select-none items-center gap-1.5 px-3 py-2 text-[12.5px] font-medium text-navy [&::-webkit-details-marker]:hidden">
             <IconChevron size={13} className="text-muted transition-transform group-open:rotate-90" />
             Mesaj önizleme
           </summary>

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ComponentProps, ReactNode } from "react";
+import { cloneElement, isValidElement, type ComponentProps, type ReactElement, type ReactNode } from "react";
 
 // Küçük, elle yazılmış Tailwind bileşenleri (yeni bağımlılık yok).
 
@@ -8,11 +8,16 @@ type Variant = "primary" | "secondary" | "ghost" | "danger";
 type Size = "sm" | "md";
 
 const VARIANT: Record<Variant, string> = {
-  primary: "bg-brand-strong text-white hover:bg-brand-ink focus-visible:ring-brand",
-  secondary: "border border-line bg-surface text-navy hover:bg-mint focus-visible:ring-brand",
-  ghost: "text-navy hover:bg-mint focus-visible:ring-brand",
-  danger: "border border-danger/30 bg-surface text-danger hover:bg-danger-tint focus-visible:ring-danger",
+  primary: "bg-brand-strong text-white hover:bg-brand-ink",
+  secondary: "border border-field bg-surface text-navy hover:bg-mint",
+  ghost: "text-navy hover:bg-mint",
+  danger: "border border-danger/60 bg-surface text-danger hover:bg-danger-tint",
 };
+
+/* Devre dışı görünüm: opaklık yerine ölçülmüş renk çifti.
+   Eski disabled:opacity-60 primary'de beyaz metni 2.95:1'e düşürüyordu; muted/surface-2 = 6.65:1.
+   `busy` durumu devre dışı SAYILMAZ: buton rengini korur, yalnız tıklama kilitlenir. */
+const DISABLED = "cursor-not-allowed border border-line bg-surface-2 text-muted";
 
 const SIZE: Record<Size, string> = {
   sm: "h-8 px-3 text-[13px]",
@@ -27,12 +32,13 @@ export interface ButtonProps extends ComponentProps<"button"> {
 }
 
 export function Button({ variant = "secondary", size = "md", busy = false, icon, className = "", children, disabled, ...rest }: ButtonProps) {
+  const inactive = Boolean(disabled) && !busy;
   return (
     <button
       type="button"
       disabled={disabled || busy}
       aria-busy={busy || undefined}
-      className={`inline-flex shrink-0 items-center justify-center gap-2 rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-mint disabled:cursor-not-allowed disabled:opacity-60 ${VARIANT[variant]} ${SIZE[size]} ${className}`}
+      className={`tap inline-flex shrink-0 items-center justify-center gap-2 rounded-lg font-medium transition-colors ${inactive ? DISABLED : VARIANT[variant]} ${SIZE[size]} ${className}`}
       {...rest}
     >
       {busy ? <Spinner className="size-4" /> : icon}
@@ -43,7 +49,7 @@ export function Button({ variant = "secondary", size = "md", busy = false, icon,
 
 export function Spinner({ className = "size-5" }: { className?: string }) {
   return (
-    <svg className={`animate-spin ${className}`} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg className={`animate-spin ${className}`} viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
       <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
       <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
     </svg>
@@ -51,7 +57,7 @@ export function Spinner({ className = "size-5" }: { className?: string }) {
 }
 
 export const inputClass =
-  "h-10 w-full rounded-lg border border-line bg-surface px-3 text-sm text-navy placeholder:text-[#5b6b76] focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30 disabled:bg-surface-2 disabled:text-muted";
+  "tap-y h-10 w-full rounded-lg border border-field bg-surface px-3 text-sm text-navy placeholder:text-[#5b6b76] focus:border-brand-strong disabled:bg-surface-2 disabled:text-muted";
 
 export function Input({ className = "", ...rest }: ComponentProps<"input">) {
   return <input className={`${inputClass} ${className}`} {...rest} />;
@@ -70,13 +76,30 @@ export function Textarea({ className = "", ...rest }: ComponentProps<"textarea">
 }
 
 export function Field({ label, hint, error, children, htmlFor }: { label: string; hint?: ReactNode; error?: string; children: ReactNode; htmlFor?: string }) {
+  // Açıklama/hata metni alana aria-describedby ile bağlanır; denetim id'si htmlFor'dan türetilir.
+  const describedBy = htmlFor && (error || hint) ? `${htmlFor}-desc` : undefined;
+  const control =
+    describedBy && isValidElement(children)
+      ? cloneElement(children as ReactElement<{ "aria-describedby"?: string; "aria-invalid"?: boolean }>, {
+          "aria-describedby": describedBy,
+          "aria-invalid": error ? true : undefined,
+        })
+      : children;
   return (
     <div className="space-y-1.5">
       <label htmlFor={htmlFor} className="block text-[13px] font-medium text-navy">
         {label}
       </label>
-      {children}
-      {error ? <p className="text-xs text-danger">{error}</p> : hint ? <p className="text-xs text-muted">{hint}</p> : null}
+      {control}
+      {error ? (
+        <p id={describedBy} role="alert" className="text-xs text-danger">
+          {error}
+        </p>
+      ) : hint ? (
+        <p id={describedBy} className="text-xs text-muted">
+          {hint}
+        </p>
+      ) : null}
     </div>
   );
 }
