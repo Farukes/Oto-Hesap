@@ -38,3 +38,8 @@ CLAUDE.local.md
 .vscode/*
 !.vscode/extensions.json
 eval-sonuc.json
+
+# playwright
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/blob-report/
