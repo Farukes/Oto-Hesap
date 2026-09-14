@@ -28,6 +28,19 @@ import numpy as np
 import psycopg
 from faker import Faker
 
+
+def _env_value(name: str, default: str) -> str:
+    """Ortamdan, yoksa depo kökündeki .env dosyasından oku (make seed .env'i export etmez)."""
+    if os.environ.get(name):
+        return os.environ[name].strip()
+    env_file = Path(__file__).resolve().parents[1] / ".env"
+    if env_file.exists():
+        for line in env_file.read_text().splitlines():
+            if line.startswith(name + "="):
+                return line.split("=", 1)[1].split("#", 1)[0].strip().strip('"')
+    return default
+
+
 SEED = 42
 ROOT = Path(__file__).resolve().parents[1]
 TR = timezone(timedelta(hours=3))  # mağaza saati; DB'ye UTC yazılır
@@ -79,7 +92,12 @@ class ProductSpec:
 
 # 5 tedarikçi; ilki Telegram (chat_id yer tutucu, Ömer gerçek id'yi .env/DB'de günceller)
 SUPPLIERS: tuple[SupplierSpec, ...] = (
-    SupplierSpec("Anadolu Güç Sistemleri", "telegram", "TELEGRAM_CHAT_ID", 3),
+    SupplierSpec(
+        "Anadolu Güç Sistemleri",
+        "telegram",
+        _env_value("TELEGRAM_DEFAULT_CHAT_ID", "TELEGRAM_CHAT_ID"),
+        3,
+    ),
     SupplierSpec("İstanbul Teknoloji İthalat", "email", None, 5),
     SupplierSpec("Marmara Aksesuar Dağıtım", "email", None, 4),
     SupplierSpec("Ege Kablo Sanayi", "email", None, 2),

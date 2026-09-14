@@ -44,7 +44,12 @@ def send_message(supplier: Supplier, text: str) -> dict[str, Any]:
     """Tedarikçinin kanalına göre mesajı iletir. Dönüş: {ok, dry_run, channel[, message_id]}."""
     channel = supplier.contact_channel
     if channel == "telegram":
-        return send_telegram(supplier.contact_address, text)
+        chat_id = (supplier.contact_address or "").strip()
+        if not chat_id.lstrip(
+            "-"
+        ).isdigit():  # seed yer tutucusu ("TELEGRAM_CHAT_ID") → .env'deki varsayılan
+            chat_id = (settings.telegram_default_chat_id or "").strip() or chat_id
+        return send_telegram(chat_id, text)
     if channel == "email":
         log.info(
             "e-posta kanalı bugün gönderim yapmıyor (dry-run): tedarikçi=%s adres=%s uzunluk=%d",
