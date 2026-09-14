@@ -11,8 +11,10 @@ Koruma katmanları (parser geçti = güvenli sanılmaz):
 3. Fonksiyon izin listesi (D19): yalnız sum, count, avg, min, max, coalesce, round, date_trunc,
    date_part, extract, now, current_date, to_char, lower, upper, cast, nullif, greatest, least, abs.
 4. Tablo beyaz listesi (CTE adları hariç); şema yalnız public.
-5. LIMIT yoksa 200 eklenir; 200'den büyükse 200'e çekilir.
-6. Çalıştırma engine_ro ile (statement_timeout 5 sn + read-only işlem).
+5. Sütun/yapı reddi: `suppliers.contact_address` (ve o tabloyu okuyan kapsamda `*`),
+   OID ailesi tür dönüşümü (regclass/regproc), `WITH RECURSIVE`.
+6. LIMIT yoksa 200 eklenir; 200'den büyükse 200'e çekilir.
+7. Çalıştırma engine_ro ile (statement_timeout 5 sn + read-only işlem).
 """
 
 from __future__ import annotations
@@ -47,6 +49,11 @@ ALLOWED_TABLES = frozenset(
     {"sales", "expenses", "products", "suppliers", "purchase_orders", "v_monthly_cashflow"}
 )
 ALLOWED_SCHEMAS = frozenset({"", "public"})
+# D19: asistana kapalı sütunlar. Salt-okur rolde sütun düzeyinde de kapalıdır (docs/schema.sql),
+# ama DATABASE_URL_RO tanımlı değilse uygulama rolü kullanılır → guard bağımsız reddeder.
+BLOCKED_COLUMNS = frozenset({"contact_address"})
+# `*` genişlemesi kapalı sütunu da getirir; bu tabloları okuyan kapsamda yıldız yasak.
+STAR_BLOCKED_TABLES = frozenset({"suppliers"})
 DEFAULT_LIMIT = 200
 MAX_SUMMARY_ROWS = 20
 FEW_SHOT_COUNT = 6
@@ -395,6 +402,34 @@ def _function_key(node: exp.Func) -> str:
     return node.sql_name().lower()
 
 
+def _scope_tables(select: exp.Select) -> set[str]:
+    """Bir SELECT'in kendi FROM/JOIN kaynaklarındaki tablo adları (alt sorgular dahil).
+    WHERE içindeki alt sorgular sayılmaz: `*` yalnız kaynak tabloların sütunlarını getirir."""
+    # sqlglot 30'da anahtar "from_", eskisinde "from" — ikisini de dene.
+    from_node = select.args.get("from_") or select.args.get("from")
+    sources: list[exp.Expression] = [from_node, *(select.args.get("joins") or [])]
+    names: set[str] = set()
+    for source in sources:
+        if source is None:
+            continue
+        names.update(table.name.lower() for table in source.find_all(exp.Table))
+    return names
+
+
+def _star_reads_blocked_table(tree: exp.Expression) -> str | None:
+    """`SELECT *` / `s.*` projeksiyonu kapalı sütunlu bir tabloyu okuyorsa o tablonun adı."""
+    for star in tree.find_all(exp.Star):
+        projection = star.parent
+        if isinstance(projection, exp.Column):  # "s.*"
+            projection = projection.parent
+        if not isinstance(projection, exp.Select):  # count(*) gibi: genişleme yok
+            continue
+        blocked = _scope_tables(projection) & STAR_BLOCKED_TABLES
+        if blocked:
+            return sorted(blocked)[0]
+    return None
+
+
 def guard_sql(raw_sql: str) -> GuardedSQL:
     """AGENTS.md §7: tek okuma ifadesi, fonksiyon izin listesi, beyaz liste, LIMIT.
 
@@ -428,6 +463,19 @@ def guard_sql(raw_sql: str) -> GuardedSQL:
         key = _function_key(func)
         if key not in ALLOWED_FUNCTIONS and key not in STRUCTURAL_FUNCS:
             raise GuardError(f"izinsiz fonksiyon: {key or type(func).__name__}", sql)
+    # OID ailesi ('sales'::regclass, 'pg_sleep'::regproc): katalog yoklama aracı, işimiz yok.
+    if tree.find(exp.ObjectIdentifier) is not None:
+        raise GuardError("izinsiz tür dönüşümü (OID ailesi)", sql)
+    # WITH RECURSIVE: dış LIMIT özyinelemeyi durdurmaz; 5 sn'lik CPU/bellek tüketimi (DoS).
+    if any(w.args.get("recursive") for w in tree.find_all(exp.With)):
+        raise GuardError("WITH RECURSIVE yasak", sql)
+
+    for column in tree.find_all(exp.Column):
+        if column.name.lower() in BLOCKED_COLUMNS:
+            raise GuardError(f"izinsiz sütun: {column.name.lower()}", sql)
+    blocked_star = _star_reads_blocked_table(tree)
+    if blocked_star is not None:
+        raise GuardError(f"{blocked_star} tablosunda * yasak (kapalı sütun)", sql)
 
     cte_names = {cte.alias_or_name.lower() for cte in tree.find_all(exp.CTE)}
     sources: list[str] = []
