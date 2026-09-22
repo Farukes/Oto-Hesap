@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OtoHesap Web Arayüzü
 
-## Getting Started
+OtoHesap platformunun kullanıcı arayüzü; Next.js 16 (App Router), React 19, Tailwind CSS v4 ve Recharts ile geliştirilmiştir.
 
-First, run the development server:
+## Özellikler
 
+- **Genel Bakış (`/`):** Temel finansal KPI kartları (Gelir, Gider, Fark, Kritik Stok), aylık gelir-gider trendi, harcama dağılımı grafiği ve kural tabanlı öngörü kartları.
+- **Kayıtlar (`/kayitlar`):** Gelir ve gider giriş-çıkış CRUD işlemleri, arama, sayfalama ve CSV dışa aktarımı.
+- **Stok Yönetimi (`/stok`):** Ürün envanteri, yeniden sipariş eşiği ve kritik stok durumlarının anlık takibi.
+- **Finans Asistanı (`/asistan`):** Doğal dilde soru sorarak veritabanından anlık yanıt alma; üretilen SQL sorgusunu ve veri kaynaklarını şeffafça görüntüleme.
+- **Tedarik Yönetimi (`/tedarik`):** Kritik stoğa düşen ürünler için otomatik hazırlanan sipariş taslaklarını inceleme ve tek tıkla tedarikçiye bildirim gönderme.
+
+## Geliştirme Ortamı
+
+### Bağımlılıkları Yükleme
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+# veya
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Ortam Değişkenleri
+`.env` dosyasında API adresi tanımlanabilir:
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Geliştirme Sunucusunu Başlatma
+```bash
+bun dev
+# veya
+npm run dev
+```
+Uygulama `http://localhost:3000` adresinde çalışacaktır.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Üretim Derlemesi
+```bash
+bun run build
+bun run start
+```

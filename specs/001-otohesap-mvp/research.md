@@ -1,6 +1,6 @@
 # Research: OtoHesap MVP — kararlar ve gerekçeler
 
-**Faz**: 0 | **Tarih**: 2026-09-13 (D16–D20 sonrası güncellendi) | **Kaynaklar**: `docs/DECISIONS.md` (D1–D20), `docs/research/KONTROL-2026-09-13.md` (kontrol notu 1 ve 2), `docs/research/aksiyon-listesi.md`, `docs/research/katalog-3-grup-analiz.md`, `docs/research/SONUC-chatgpt-2026-09-13.md`, `docs/research/SONUC-1-ChatGPT.md` (A3, A4, A8), `AGENTS.md` §3–§7
+**Faz**: 0 | **Tarih**: 2026-09-13 (D16–D20 sonrası güncellendi) | **Kaynaklar**: `docs/DECISIONS.md` (D1–D20), `docs/research/KONTROL-2026-09-13.md`, `docs/research/katalog-3-grup-analiz.md`, `AGENTS.md` §3–§7
 
 Her madde: **Karar / Gerekçe / Alternatifler / Kaynak**. R-01…R-16 ve R-25…R-29 alınmış kararların özeti; R-17…R-24 spec yazımı sırasında netleştirilen sözleşme ayrıntılarıdır (kodla hizalandı; sahibi Murat; AGENTS.md §6'ya PR + duyuru ile işlenir).
 
@@ -88,8 +88,8 @@ Her madde: **Karar / Gerekçe / Alternatifler / Kaynak**. R-01…R-16 ve R-25…
 - **Kaynak**: D4, D5, D6; AGENTS.md §8–§9.
 
 ### R-14 Tek gün, 19:00 dondurma; demo senaryosu tek gerçek kaynak
-- **Karar**: 09:00–22:00; checkpoint 10:30 / 13:00 / 16:30; 19:00 özellik dondurma; 20:00 yayın; 21:00 prova. Ürün büyük ölçüde 13 Eyl'de Claude ile inşa edildiği için AGENTS §11 çizelgesi "kalan işler" için yeniden yazılacak (KONTROL notu 2).
-- **Kaynak**: D7; AGENTS.md §2, §11; KONTROL notu 2.
+- **Karar**: 09:00–22:00; checkpoint 10:30 / 13:00 / 16:30; 19:00 özellik dondurma; 20:00 yayın; 21:00 prova.
+- **Kaynak**: D7; AGENTS.md §2; KONTROL notu.
 
 ### R-15 Pitch kuralları ve doğrulanmış rakamlar
 - **Karar**: "Rakiplerde AI yok" denmez; A etiketli olmayan sayı slayta girmez; konumlama "ön muhasebenin üstünde çalışan AI karar katmanı"; Paraşüt 940 TL + KDV/ay yalnız pazar çıpası; TÜİK 2024 rakamları A. Ek (D16–D18): sunumda "Fark" net kâr diye anlatılmaz, "en kârlı ürün" tahmini brüt katkıdır, veri "sentetik demo" diye etiketlenir, Render Free'de zamanlayıcının uyuduğu saklanmaz.

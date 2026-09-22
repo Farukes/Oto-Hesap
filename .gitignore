@@ -1,9 +1,9 @@
-# ortam ve sırlar
+# Ortam ve sırlar
 .env
 .env.*
 !.env.example
 
-# python
+# Python
 __pycache__/
 *.pyc
 .venv/
@@ -13,7 +13,7 @@ __pycache__/
 *.db
 *.sqlite
 
-# node / next
+# Node / Next.js
 node_modules/
 .next/
 out/
@@ -22,24 +22,25 @@ coverage/
 *.tsbuildinfo
 .vercel/
 
-# yapay zeka araç dizinleri (kişisel; depoya girmez) — spec-kit komutları hariç
-.claude/*
-!.claude/skills/
-!.claude/commands/
+# Geliştirici / AI araç dizinleri (depoya girmez)
+.claude/
+.specify/
 .cursor/
 .codex/
 .aider*
 .continue/
-CLAUDE.local.md
+CLAUDE*
+apps/web/AGENTS.md
 
-# işletim sistemi / editör
+# İşletim sistemi / editör
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
 eval-sonuc.json
 
-# playwright
+# Test raporları
 apps/web/test-results/
 apps/web/playwright-report/
 apps/web/blob-report/

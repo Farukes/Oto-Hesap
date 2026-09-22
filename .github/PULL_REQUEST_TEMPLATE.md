@@ -2,15 +2,13 @@
 <!-- 1-3 cümle. Hangi ekran / uç / servis. -->
 
 ## Neden?
-<!-- Görev kartındaki hangi madde; demo senaryosundaki hangi adım. -->
+<!-- İlgili gereksinim veya özellik. -->
 
 ## Nasıl test edildi?
-<!-- Komut + gördüğün sonuç. Ekran görüntüsü varsa ekle. -->
+<!-- Komut + elde edilen sonuç. Varsa ekran görüntüsü. -->
 
 ## Kontrol listesi
-- [ ] `ruff` / `lint` temiz, testler geçiyor (CI yeşil)
+- [ ] `ruff` / `lint` temiz, testler geçiyor
 - [ ] Yeni ortam değişkeni varsa `.env.example` güncellendi
-- [ ] API sözleşmesi değiştiyse `AGENTS.md` §6 güncellendi ve WhatsApp'ta duyuruldu
-- [ ] `docs/demo-senaryosu.md` hâlâ baştan sona çalışıyor
-- [ ] Commit mesajlarında yapay zeka imzası yok (Co-Authored-By, "Generated with" vb.)
-- [ ] Sır, anahtar, `.env` yok
+- [ ] API sözleşmesi değiştiyse `AGENTS.md` güncellendi
+- [ ] Sır, anahtar veya hassas bilgi içermiyor

@@ -134,14 +134,13 @@ docs/
 
 ### Faz 0 — Araştırma (tamamlandı)
 
-Çıktı: [research.md](./research.md). Kaynaklar `docs/DECISIONS.md` D1–D20, `docs/research/KONTROL-2026-09-13.md` (not 1 + not 2), `docs/research/SONUC-1-ChatGPT.md` (A3, A4, A8), `aksiyon-listesi.md`, `katalog-3-grup-analiz.md`. Spec'te `NEEDS CLARIFICATION` yoktur; sözleşme ayrıntıları R-17…R-24'te kodla hizalandı; tek açık tasarım kararı dönem tanımının birleştirilmesi (R-17, TODO(murat)).
+Çıktı: [research.md](./research.md). Kaynaklar `docs/DECISIONS.md` D1–D20, `docs/research/KONTROL-2026-09-13.md`, `katalog-3-grup-analiz.md`. Spec'te `NEEDS CLARIFICATION` yoktur; sözleşme ayrıntıları R-17…R-24'te kodla hizalandı; tek açık tasarım kararı dönem tanımının birleştirilmesi (R-17, TODO(murat)).
 
 ### Faz 1 — Tasarım (tamamlandı)
 
 - [data-model.md](./data-model.md): tablolar, `notify_ref`, `ux_open_order_per_product`, sütun düzeyi grant, durum makinesi (502/409), D16 metrikleri, seed hedefleri (uygulandı).
 - [contracts/api.md](./contracts/api.md): AGENTS.md §6 + eklemeler; her uç için yöntem, yol, şema, hata, örnek; kodla birebir.
 - [quickstart.md](./quickstart.md): `make` hedefleriyle sıfırdan çalıştırma, RO rol + sütun grant, test, demo, yayın.
-- Ajan bağlam dosyası: `CLAUDE.md` → `@AGENTS.md`; AGENTS §4 spec-kit klasörünü listeler. Ek güncelleme gerekmez.
 
 ### Faz 2 — Görevler
 
