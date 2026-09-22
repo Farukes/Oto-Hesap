@@ -96,4 +96,4 @@ if [ "$FAIL" -gt 0 ]; then
   echo "  Önce yukarıdaki ✗ satırlarını çöz. Takılırsan gruba yaz: 'doctor çıktısı: …'"
   exit 1
 fi
-echo "  Hazırsın. Demo akışı: docs/sunum/3-dakika-akis.md"
+echo "  Sistem hazır."

@@ -92,7 +92,7 @@ Geleneksel karmaşık ERP sistemleri ile yetersiz kalan elektronik tablolar aras
 
 ### 1. Depoyu Klonlayın
 ```bash
-git clone https://github.com/<kullanici_adiniz>/Oto-Hesap.git
+git clone https://github.com/Farukes/Oto-Hesap.git
 cd Oto-Hesap
 ```
 

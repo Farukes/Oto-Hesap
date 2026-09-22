@@ -39,9 +39,8 @@ cat <<'EOF'
   [ ] Telefonda Telegram sohbeti açık, ses açık, şarj yeterli
   [ ] .env içinde NOTIFY_DRY_RUN=false (gerçek mesaj için)
   [ ] Tarayıcıda 4 sekme: /  /asistan  /tedarik  /stok
-  [ ] Hotspot hazır (okul Wi-Fi'ı için)
-  [ ] Yedek video elde (90 sn)
-  [ ] Akış: docs/sunum/3-dakika-akis.md — hedef 2:50
+  [ ] Hotspot hazır (yedek internet için)
+  [ ] Demo provası tamamlandı
 EOF
 echo
 echo "  Hazır. Bol şans."
