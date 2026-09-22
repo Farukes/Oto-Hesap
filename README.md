@@ -222,4 +222,3 @@ make web   # Next.js arayüzü: http://localhost:3000
 * **Kutay Yıldırım** — Frontend & UI/UX Architecture
 * **Muratcan Ateş** — Backend Core, Database & Security
 * **Ömer Faruk Eskitürk** — Autonomous Supply Agent, Order Management & Telegram Integration
-* **Yiğit Yuşa Kartal** — Data Modeling, Synthetic Simulation & Business Intelligence

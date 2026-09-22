@@ -1,4 +1,4 @@
-"""analytics uçları — AGENTS.md §6 sözleşmesi. Sahibi: Yiğit.
+"""analytics uçları — AGENTS.md §6 sözleşmesi.
 
 GET /api/analytics/expenses-by-category?period   -> [{category, amount, share}]
 GET /api/analytics/sales-by-product?period&top    -> [{product_id, product, revenue, profit, qty}]

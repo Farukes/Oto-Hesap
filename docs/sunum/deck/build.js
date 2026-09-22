@@ -24,8 +24,7 @@ const label=(s,t,x,y,w,color)=>T(s,t,{x,y,w,h:0.35,fontSize:13,bold:true,color})
  T(s,"OtoHesap",{x:M+2.0,y:1.45,w:10,h:1.9,fontSize:88,bold:true,color:WHITE});
  T(s,"Küçük işletmeler için gelir-gider ve stok takibi",{x:M,y:3.85,w:11.7,h:0.8,fontSize:30,color:MB});
  T(s,"Ne kazandım, ne harcadım, stokta ne bitiyor? Türkçe sorun, cevabı alın.",{x:M,y:4.65,w:11.7,h:0.6,fontSize:19,color:ON_DARK});
- s.addShape("line",{x:M,y:5.7,w:W-2*M,h:0,line:{color:"2E4A5C",width:1}});
- T(s,"Kutay Yıldırım   ·   Muratcan Ateş   ·   Yiğit Yuşa Kartal   ·   Ömer Faruk Eskitürk",{x:M,y:5.9,w:W-2*M,h:0.5,fontSize:18,color:WHITE,bold:true});
+ T(s,"Kutay Yıldırım   ·   Muratcan Ateş   ·   Ömer Faruk Eskitürk",{x:M,y:5.9,w:W-2*M,h:0.5,fontSize:18,color:WHITE,bold:true});
  T(s,"Medeniyet Teknopark · TeknoKampüs Arena · 14 Eylül 2026",{x:M,y:6.45,w:W-2*M,h:0.4,fontSize:13,color:ON_DARK});
  s.addNotes("0:00–0:20. Adı söyle, tek cümle: küçük işletme için gelir-gider ve stok; Türkçe soruyla cevap; stok azalınca onaylı sipariş.");}
 
@@ -88,13 +87,13 @@ const label=(s,t,x,y,w,color)=>T(s,t,{x,y,w,h:0.35,fontSize:13,bold:true,color})
 
 // 6 · Ekip
 {const s=pptx.addSlide();header(s,"Ekip","");
- const team=[["KY","Kutay Yıldırım"],["MA","Muratcan Ateş"],["ÖE","Ömer Faruk Eskitürk"],["YK","Yiğit Yuşa Kartal"]];
- team.forEach((t,i)=>{const w=(W-2*M-0.6)/4,x=M+i*(w+0.2);card(s,x,2.2,w,2.2,WHITE,LINE);
+ const team=[["KY","Kutay Yıldırım"],["MA","Muratcan Ateş"],["ÖE","Ömer Faruk Eskitürk"]];
+ team.forEach((t,i)=>{const w=(W-2*M-0.4)/3,x=M+i*(w+0.2);card(s,x,2.2,w,2.2,WHITE,LINE);
   s.addShape("ellipse",{x:x+w/2-0.45,y:2.5,w:0.9,h:0.9,fill:{color:GREEN},line:{type:"none"}});
   T(s,t[0],{x:x+w/2-0.45,y:2.5,w:0.9,h:0.9,fontSize:20,bold:true,color:WHITE,align:"center",valign:"middle"});
   T(s,t[1],{x:x+0.15,y:3.55,w:w-0.3,h:0.6,fontSize:17,bold:true,color:INK,align:"center",valign:"middle"});});
  T(s,"Medeniyet Teknopark · TeknoKampüs Arena",{x:M,y:4.8,w:W-2*M,h:0.45,fontSize:16,color:MUTED,align:"center"});
  T(s,"Sırada: pazaryeri siparişleri · e-belge · çok kullanıcılı sürüm",{x:M,y:5.7,w:W-2*M,h:0.5,fontSize:20,bold:true,color:GREEN,align:"center"});
- T(s,"github.com/muratcan-ates/Oto-Hesap",{x:M,y:6.25,w:W-2*M,h:0.35,fontSize:13,color:MUTED,align:"center"});
+ T(s,"github.com/Farukes/Oto-Hesap",{x:M,y:6.25,w:W-2*M,h:0.35,fontSize:13,color:MUTED,align:"center"});
  s.addNotes("2:35–2:55. İsimler. Sırada pazaryeri siparişleri ve e-belge. Teşekkürler.");}
 pptx.writeFile({fileName:OUT}).then(()=>console.log("yazıldı:",OUT));

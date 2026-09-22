@@ -1,6 +1,6 @@
 # Sentetik veri — `data/seed.py`
 
-Teknoloji aksesuar mağazası senaryosu, **1 Nisan – 13 Eylül 2026**. Şema `docs/schema.sql`; sahibi Yiğit.
+Teknoloji aksesuar mağazası senaryosu, **1 Nisan – 13 Eylül 2026**. Şema: `docs/schema.sql`.
 %100 sentetik (KVKK, D12): tedarikçi e-postaları, kişi ve firma adları Faker `tr_TR` üretimidir.
 
 ## Çalıştırma

@@ -1,4 +1,4 @@
-"""insights uçları — AGENTS.md §6 sözleşmesi. Sahibi: Yiğit.
+"""insights uçları — AGENTS.md §6 sözleşmesi.
 
 GET /api/insights -> [{id, title, body, severity, metric, change_pct}] (en fazla 5, kural tabanlı)
 """

@@ -1,4 +1,4 @@
-"""export uçları — AGENTS.md §6 sözleşmesi. Sahibi: Yiğit.
+"""export uçları — AGENTS.md §6 sözleşmesi.
 
 GET /api/export/sales.csv · GET /api/export/expenses.csv
 Excel (TR) uyumlu: UTF-8 BOM, `;` ayraç, ondalık virgül, tarih `YYYY-MM-DD HH:MM` (UTC).
